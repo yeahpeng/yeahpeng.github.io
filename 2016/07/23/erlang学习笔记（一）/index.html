@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="erlang,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这阶段在学erlang，记下其中容易忘记的部分。">
+<meta name="keywords" content="erlang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="erlang学习笔记（一）">
+<meta property="og:url" content="http://yoursite.com/2016/07/23/erlang学习笔记（一）/index.html">
+<meta property="og:site_name" content="YP&#39;s blog">
+<meta property="og:description" content="这阶段在学erlang，记下其中容易忘记的部分。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-11-05T16:07:13.326Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="erlang学习笔记（一）">
+<meta name="twitter:description" content="这阶段在学erlang，记下其中容易忘记的部分。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/23/erlang学习笔记（一）/">
+
+
+
+
+
+  <title>erlang学习笔记（一） | YP's blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?de96a846947a761a1dc36ab70eeb06d7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YP's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'iaeCy3bC1pmHqX-Ju3UQ','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/23/erlang学习笔记（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeahpeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YP's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">erlang学习笔记（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-23T23:22:11+08:00">
+                2016-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/07/23/erlang学习笔记（一）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/23/erlang学习笔记（一）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>　　这阶段在学<code>erlang</code>，记下其中容易忘记的部分。<a id="more"></a></p>
+<h2 id="supervisor"><a href="#supervisor" class="headerlink" title="supervisor:"></a>supervisor:</h2><h3 id="start-link-2-start-link-3"><a href="#start-link-2-start-link-3" class="headerlink" title="start_link/2,start_link/3"></a>start_link/2,start_link/3</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">start_link(Module, Args) -&gt; startlink_ret()</span><br><span class="line">start_link(SupName, Module, Args) -&gt; startlink_ret()</span><br><span class="line">Types:</span><br><span class="line">    SumName = sup_name() = &#123;local, Name&#125; | &#123;global, Name&#125; | &#123;via, Module, Name&#125;</span><br><span class="line">    Module = module()</span><br><span class="line">    args = term()</span><br><span class="line">    startlink_ret() = </span><br><span class="line">        &#123;ok, pid()&#125; | ignore | &#123;error, startlink_err()&#125;</span><br><span class="line">    startlink_err() = </span><br><span class="line">        &#123;already_started, pid()&#125; | &#123;shutdown, term()&#125; | term()</span><br><span class="line">    sup_name() = </span><br><span class="line">        &#123;local, Name :: atom()&#125; |</span><br><span class="line">        &#123;global, Name :: atom()&#125; |</span><br><span class="line">        &#123;via, Module :: module(), Name :: any()&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据SupName,觉得是否注册以及注册为本地还是全局。<br><code>Args</code>作为参数传递给<code>Module:init/1</code>。</p>
+<h3 id="Module-init-1"><a href="#Module-init-1" class="headerlink" title="Module:init/1"></a>Module:init/1</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Module:init(Args) -&gt; Result</span><br><span class="line">Result = &#123;ok, &#123;&#123;RestartStrategy, MaxR, MaxT&#125;,[ChildSpec, ...]&#125;&#125;.</span><br></pre></td></tr></table></figure>
+
+<p>返回重启策略，在MaxT内最大重启MaxR次和子进程规范。</p>
+<h3 id="重启策略："><a href="#重启策略：" class="headerlink" title="重启策略："></a>重启策略：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1、one_for_one</span><br><span class="line">若子进程停止，则之重启该进程</span><br><span class="line">2、one_for_all</span><br><span class="line">若一个子进程停止，所有其他子进程也停止，然后所有进程重启</span><br><span class="line">3、rest_for_one</span><br><span class="line">若一个子进程停止，则启动顺序中在它之后的所有其他子进程也停止，然后停止的这些进程重启</span><br><span class="line">4、 simple_one_for_one</span><br><span class="line">一个简化的one_for_one supervisor，所有的子进程都是同样进程类型并且是动态添加的实例</span><br></pre></td></tr></table></figure>
+
+<h3 id="子进程规范"><a href="#子进程规范" class="headerlink" title="子进程规范"></a>子进程规范</h3><p>子进程规范由6个元素组成：{<code>ID</code>,<code>Start</code>, <code>Restart</code>, <code>Shutdown</code>, <code>Type</code>, <code>Modules</code>}。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> ID,是一个用于系统内部表示各规范的项式。</span><br><span class="line"> Start，是一个用于启动进程的三元组&#123;M，F，C&#125;。</span><br><span class="line"> Restart，用于之美子进程发生故障时是否需要重启。</span><br><span class="line">    premanent：表示无论处于任何原因导致进程终止都应重启。</span><br><span class="line">    termporary：表示永不重启进程。</span><br><span class="line">    transient：仅在进程意外终止时重启。</span><br><span class="line">sutdown，用于指明如何终止进程。</span><br><span class="line">    brutal_kill:表示关闭监督 进程是立即终止子进程。</span><br><span class="line">    infinity：表示给予子进程充分的时间自行退出。</span><br><span class="line">    整数（以毫秒为单位）：如果进程在指定时间内未能自行退出，将被无条件终止。</span><br><span class="line">Type，表示进程是监督者（supervisor）还是工作者（woker）。</span><br></pre></td></tr></table></figure>
+
+<h3 id="start-child-2"><a href="#start-child-2" class="headerlink" title="start_child/2"></a>start_child/2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">start_child(SupRef, ChildSpec) -&gt; startchild_ret()</span><br><span class="line">Types:</span><br><span class="line">    SupRef = sup_ref()</span><br><span class="line">    ChildSpec = child_spec() | (List :: [term()])</span><br><span class="line">    startchild_ret() = </span><br><span class="line">        &#123;ok, Child :: child()&#125; |</span><br><span class="line">        &#123;ok, Child :: child(), Info :: term()&#125; |</span><br><span class="line">        &#123;error, startchild_err()&#125;</span><br><span class="line">    startchild_err() = </span><br><span class="line">        already_present | &#123;already_started, Child :: child()&#125; | term()</span><br></pre></td></tr></table></figure>
+
+<h2 id="gen-server"><a href="#gen-server" class="headerlink" title="gen_server"></a>gen_server</h2><p>回调函数与行为函数之间的关系</p>
+<table>
+<thead>
+<tr>
+<th>gen_server module</th>
+<th>Callback module</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>gen_server:start</td>
+<td></td>
+</tr>
+<tr>
+<td>gen_server:start_link</td>
+<td>Module:init/1</td>
+</tr>
+<tr>
+<td>gen_server:stop</td>
+<td>Module:terminate/2</td>
+</tr>
+<tr>
+<td>gen_server:call</td>
+<td></td>
+</tr>
+<tr>
+<td>gen_server:multi_call</td>
+<td>Module:handle_call/3</td>
+</tr>
+<tr>
+<td>gen_server:cast</td>
+<td></td>
+</tr>
+<tr>
+<td>gen_server:abcast</td>
+<td>Module:handle_cast/2</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Module:handle_info/2</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Module:terminate/2</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Module:code_change/3</td>
+</tr>
+</tbody></table>
+<h3 id="start-link-3-start-link-4"><a href="#start-link-3-start-link-4" class="headerlink" title="start_link/3,start_link/4"></a>start_link/3,start_link/4</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">start_link(Module, Args, Options) -&gt; Result</span><br><span class="line">start_link(ServerName, Module, Args, Options) -&gt; Result</span><br><span class="line">Types:</span><br><span class="line">    ServerName = &#123;local,Name&#125; | &#123;global,GlobalName&#125;</span><br><span class="line">      | &#123;via,Module,ViaName&#125;</span><br><span class="line">     Name = atom()</span><br><span class="line">     GlobalName = ViaName = term()</span><br><span class="line">    Module = atom()</span><br><span class="line">    Args = term()</span><br><span class="line">    Options = [Option]</span><br><span class="line">     Option = &#123;debug,Dbgs&#125; | &#123;timeout,Time&#125; | &#123;spawn_opt,SOpts&#125;</span><br><span class="line">      Dbgs = [Dbg]</span><br><span class="line">       Dbg = trace | log | statistics | &#123;log_to_file,FileName&#125; | &#123;install,&#123;Func,FuncState&#125;&#125;</span><br><span class="line">      SOpts = [term()]</span><br><span class="line">    Result = &#123;ok,Pid&#125; | ignore | &#123;error,Error&#125;</span><br><span class="line">     Pid = pid()</span><br><span class="line">     Error = &#123;already_started,Pid&#125; | term()</span><br></pre></td></tr></table></figure>
+
+<h3 id="Module-init-1-1"><a href="#Module-init-1-1" class="headerlink" title="Module:init/1"></a>Module:init/1</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Module:init(Args) -&gt; Result</span><br><span class="line">    Types:</span><br><span class="line">    Args = term()</span><br><span class="line">    Result = &#123;ok,State&#125; | &#123;ok,State,Timeout&#125; | &#123;ok,State,hibernate&#125;</span><br><span class="line">     | &#123;stop,Reason&#125; | ignore</span><br><span class="line">     State = term()</span><br><span class="line">     Timeout = int()&gt;=0 | infinity</span><br><span class="line">     Reason = term()</span><br></pre></td></tr></table></figure>
+
+<p>如果初始化成功，会返回{<code>ok</code>, <code>State</code>},{<code>ok</code>, <code>State</code>, <code>Timeout</code>}或者{<code>ok</code>, <code>State</code>, <code>hibernate</code>}.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/erlang/" rel="tag"># erlang</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/21/Hdu5458-Stability/" rel="next" title="Hdu5458 Stability">
+                <i class="fa fa-chevron-left"></i> Hdu5458 Stability
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/07/erlang学习笔记（二）/" rel="prev" title="Erlang学习笔记（二）">
+                Erlang学习笔记（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2016/07/23/erlang学习笔记（一）/" data-title="erlang学习笔记（一）" data-url="http://yoursite.com/2016/07/23/erlang学习笔记（一）/">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="yeahpeng">
+            
+              <p class="site-author-name" itemprop="name">yeahpeng</p>
+              <p class="site-description motion-element" itemprop="description">one blog a day, keep the doctor away</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yeahpeng" target="_blank" title="github">
+                      
+                        <i class="fa fa-fw fa-globe"></i>github</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#supervisor"><span class="nav-number">1.</span> <span class="nav-text">supervisor:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#start-link-2-start-link-3"><span class="nav-number">1.1.</span> <span class="nav-text">start_link/2,start_link/3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Module-init-1"><span class="nav-number">1.2.</span> <span class="nav-text">Module:init/1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重启策略："><span class="nav-number">1.3.</span> <span class="nav-text">重启策略：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子进程规范"><span class="nav-number">1.4.</span> <span class="nav-text">子进程规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#start-child-2"><span class="nav-number">1.5.</span> <span class="nav-text">start_child/2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gen-server"><span class="nav-number">2.</span> <span class="nav-text">gen_server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#start-link-3-start-link-4"><span class="nav-number">2.1.</span> <span class="nav-text">start_link/3,start_link/4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Module-init-1-1"><span class="nav-number">2.2.</span> <span class="nav-text">Module:init/1</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yeahpeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yeahpeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

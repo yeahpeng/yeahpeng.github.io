@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content=",,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统. 架构复制状态机选举和日志复制状态：    状态 所有服务器上持久存在的    currentTerm 服务器最后一次知道的任期号（初始化为 0，持续递增）   votedFor 在当前获得">
+<meta name="keywords" content="Raft,一致性算法">
+<meta property="og:type" content="website">
+<meta property="og:title" content="经典论文阅读-Raft">
+<meta property="og:url" content="http://yoursite.com/staging/经典论文阅读-Raft.html">
+<meta property="og:site_name" content="YP&#39;s blog">
+<meta property="og:description" content="Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统. 架构复制状态机选举和日志复制状态：    状态 所有服务器上持久存在的    currentTerm 服务器最后一次知道的任期号（初始化为 0，持续递增）   votedFor 在当前获得">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-11-05T16:07:13.326Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="经典论文阅读-Raft">
+<meta name="twitter:description" content="Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统. 架构复制状态机选举和日志复制状态：    状态 所有服务器上持久存在的    currentTerm 服务器最后一次知道的任期号（初始化为 0，持续递增）   votedFor 在当前获得">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/staging/经典论文阅读-Raft.html">
+
+
+
+
+
+  <title>经典论文阅读-Raft | YP's blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?de96a846947a761a1dc36ab70eeb06d7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YP's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'iaeCy3bC1pmHqX-Ju3UQ','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">经典论文阅读-Raft</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <p>Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统.</p>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><h2 id="复制状态机"><a href="#复制状态机" class="headerlink" title="复制状态机"></a>复制状态机</h2><h2 id="选举和日志复制"><a href="#选举和日志复制" class="headerlink" title="选举和日志复制"></a>选举和日志复制</h2><p><strong>状态</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>所有服务器上持久存在的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>currentTerm</td>
+<td>服务器最后一次知道的任期号（初始化为 0，持续递增）</td>
+</tr>
+<tr>
+<td>votedFor</td>
+<td>在当前获得选票的候选人的 Id</td>
+</tr>
+<tr>
+<td>log[]</td>
+<td>日志条目集；每一个条目包含一个用户状态机执行的指令，和收到时的任期号</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>所有服务器上经常变的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>commitIndex</td>
+<td>已知的最大的已经被提交的日志条目的索引值</td>
+</tr>
+<tr>
+<td>lastApplied</td>
+<td>最后被应用到状态机的日志条目索引值（初始化为 0，持续递增）</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>在领导人里经常改变的 （选举后重新初始化）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>nextIndex[]</td>
+<td>对于每一个服务器，需要发送给他的下一个日志条目的索引值（初始化为领导人最后索引值加一）</td>
+</tr>
+<tr>
+<td>matchIndex[]</td>
+<td>对于每一个服务器，已经复制给他的日志的最高索引值</td>
+</tr>
+</tbody></table>
+<p><strong>附加日志 RPC</strong>：</p>
+<p>由领导人负责调用来复制日志指令；也会用作heartbeat</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>term</td>
+<td>领导人的任期号</td>
+</tr>
+<tr>
+<td>leaderId</td>
+<td>领导人的 Id，以便于跟随者重定向请求</td>
+</tr>
+<tr>
+<td>prevLogIndex</td>
+<td>新的日志条目紧随之前的索引值</td>
+</tr>
+<tr>
+<td>prevLogTerm</td>
+<td>prevLogIndex 条目的任期号</td>
+</tr>
+<tr>
+<td>entries[]</td>
+<td>准备存储的日志条目（表示心跳时为空；一次性发送多个是为了提高效率）</td>
+</tr>
+<tr>
+<td>leaderCommit</td>
+<td>领导人已经提交的日志的索引值</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>返回值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>term</td>
+<td>当前的任期号，用于领导人去更新自己</td>
+</tr>
+<tr>
+<td>success</td>
+<td>跟随者包含了匹配上 prevLogIndex 和 prevLogTerm 的日志时为真</td>
+</tr>
+</tbody></table>
+<p>接收者实现：</p>
+<ol>
+<li>如果 <code>term &lt; currentTerm</code> 就返回 false </li>
+<li>如果日志在 prevLogIndex 位置处的日志条目的任期号和 prevLogTerm 不匹配，则返回 false </li>
+<li>如果已经存在的日志条目和新的产生冲突（索引值相同但是任期号不同），删除这一条和之后所有的 </li>
+<li>附加日志中尚未存在的任何新条目</li>
+<li>如果 <code>leaderCommit &gt; commitIndex</code>，令 commitIndex 等于 leaderCommit 和 新日志条目索引值中较小的一个</li>
+</ol>
+<p><strong>请求投票 RPC</strong>：</p>
+<p>由候选人负责调用用来征集选票</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>term</td>
+<td>候选人的任期号</td>
+</tr>
+<tr>
+<td>candidateId</td>
+<td>请求选票的候选人的 Id</td>
+</tr>
+<tr>
+<td>lastLogIndex</td>
+<td>候选人的最后日志条目的索引值</td>
+</tr>
+<tr>
+<td>lastLogTerm</td>
+<td>候选人最后日志条目的任期号</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>返回值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>term</td>
+<td>当前任期号，以便于候选人去更新自己的任期号</td>
+</tr>
+<tr>
+<td>voteGranted</td>
+<td>候选人赢得了此张选票时为真</td>
+</tr>
+</tbody></table>
+<p>接收者实现：</p>
+<ol>
+<li>如果<code>term &lt; currentTerm</code>返回 false</li>
+<li>如果 votedFor 为空或者为 candidateId，并且候选人的日志至少和自己一样新，那么就投票给他</li>
+</ol>
+<p><strong>所有服务器需遵守的规则</strong>：</p>
+<p>所有服务器：</p>
+<ul>
+<li>如果<code>commitIndex &gt; lastApplied</code>，那么就 lastApplied 加一，并把<code>log[lastApplied]</code>应用到状态机中</li>
+<li>如果接收到的 RPC 请求或响应中，任期号<code>T &gt; currentTerm</code>，那么就令 currentTerm 等于 T，并切换状态为跟随者</li>
+</ul>
+<p>跟随者：</p>
+<ul>
+<li>响应来自候选人和领导者的请求</li>
+<li>如果在超过选举超时时间的情况之前都没有收到领导人的心跳，或者是候选人请求投票的，就自己变成候选人</li>
+</ul>
+<p>候选人：</p>
+<ul>
+<li>在转变成候选人后就立即开始选举过程<ul>
+<li>自增当前的任期号（currentTerm）</li>
+<li>给自己投票</li>
+<li>重置选举超时计时器</li>
+<li>发送请求投票的 RPC 给其他所有服务器</li>
+</ul>
+</li>
+<li>如果接收到大多数服务器的选票，那么就变成领导人</li>
+<li>如果接收到来自新的领导人的附加日志 RPC，转变成跟随者</li>
+<li>如果选举过程超时，再次发起一轮选举</li>
+</ul>
+<p>领导人：</p>
+<ul>
+<li>一旦成为领导人：发送空的附加日志 RPC（心跳）给其他所有的服务器；在一定的空余时间之后不停的重复发送，以阻止跟随者超时</li>
+<li>如果接收到来自客户端的请求：附加条目到本地日志中，在条目被应用到状态机后响应客户端</li>
+<li>如果对于一个跟随者，最后日志条目的索引值大于等于 nextIndex，那么：发送从 nextIndex 开始的所有日志条目：<ul>
+<li>如果成功：更新相应跟随者的 nextIndex 和 matchIndex</li>
+<li>如果因为日志不一致而失败，减少 nextIndex 重试</li>
+</ul>
+</li>
+<li>如果存在一个满足<code>N &gt; commitIndex</code>的 N，并且大多数的<code>matchIndex[i] ≥ N</code>成立，并且<code>log[N].term == currentTerm</code>成立，那么令 commitIndex 等于这个 N </li>
+</ul>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p><strong>之前任期内未提交的日志需要和新日志一起广播</strong></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://ramcloud.atlassian.net/wiki/download/attachments/6586375/raft.pdf" target="_blank" rel="noopener">英文 paper</a></li>
+<li><a href="https://github.com/maemual/raft-zh_cn/blob/master/raft-zh_cn.md" target="_blank" rel="noopener">中文 paper</a></li>
+<li><a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="noopener">动画</a></li>
+<li><a href="http://nil.csail.mit.edu/6.824/2018/labs/lab-raft.html" target="_blank" rel="noopener">6.824 Lab 2</a></li>
+<li><a href="https://github.com/brpc/braft" target="_blank" rel="noopener">Braft</a></li>
+<li><a href="https://github.com/sofastack/sofa-jraft" target="_blank" rel="noopener">sofa-jraft</a> </li>
+</ol>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="staging/经典论文阅读-Raft.html" data-title="经典论文阅读-Raft" data-url="http://yoursite.com/staging/经典论文阅读-Raft.html">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="yeahpeng">
+            
+              <p class="site-author-name" itemprop="name">yeahpeng</p>
+              <p class="site-description motion-element" itemprop="description">one blog a day, keep the doctor away</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yeahpeng" target="_blank" title="github">
+                      
+                        <i class="fa fa-fw fa-globe"></i>github</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#架构"><span class="nav-number">1.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制状态机"><span class="nav-number">2.</span> <span class="nav-text">复制状态机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选举和日志复制"><span class="nav-number">3.</span> <span class="nav-text">选举和日志复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意点"><span class="nav-number">4.</span> <span class="nav-text">注意点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yeahpeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yeahpeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
