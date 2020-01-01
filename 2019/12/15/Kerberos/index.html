@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="Kerberos  客户端向AS发起请求，请求内容是：我是谁（客户端的principal），我要和票据授权服务通信（TGS的principal）等 AS随机生成一个密码Kc,s (Session Key),并且生成了Tc,s Ts,c两个票据（Ticket） 解开Tc,s 得到Kc,s 后，生成认证因子Authenticator: {time_stamp, Ts,c_checksum,…}Kc,s">
+<meta name="description" content="Kerberos">
 <meta name="keywords" content="Kerberos,GSSAPI">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kerberos">
 <meta property="og:url" content="http://yoursite.com/2019/12/15/Kerberos/index.html">
 <meta property="og:site_name" content="YP&#39;s blog">
-<meta property="og:description" content="Kerberos  客户端向AS发起请求，请求内容是：我是谁（客户端的principal），我要和票据授权服务通信（TGS的principal）等 AS随机生成一个密码Kc,s (Session Key),并且生成了Tc,s Ts,c两个票据（Ticket） 解开Tc,s 得到Kc,s 后，生成认证因子Authenticator: {time_stamp, Ts,c_checksum,…}Kc,s">
+<meta property="og:description" content="Kerberos">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://yzsmgg.ch.files.1drv.com/y4mg7U9-IvMhJesVOvjQpzFXY886OfTfXMMEZFvugFlwAzTKE91-1fUFyilTNqMpJiFxfB3g4a317p_o6zBn3lLJzx72M3k5NReI0R09LijIvHpcZ2P6yx-UcZ6rbdAmJMAMgCbQttPsE3BHpyqG1lXLQmoWOWWRdclVYMTlVINnvni5sRabc1hXJQx5Uq2jFGhYonfuLx6HxMSP5VM14sIEg?width=612&height=545&cropmode=none">
-<meta property="og:updated_time" content="2019-12-15T15:34:09.195Z">
+<meta property="og:updated_time" content="2020-01-01T08:48:43.222Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kerberos">
-<meta name="twitter:description" content="Kerberos  客户端向AS发起请求，请求内容是：我是谁（客户端的principal），我要和票据授权服务通信（TGS的principal）等 AS随机生成一个密码Kc,s (Session Key),并且生成了Tc,s Ts,c两个票据（Ticket） 解开Tc,s 得到Kc,s 后，生成认证因子Authenticator: {time_stamp, Ts,c_checksum,…}Kc,s">
+<meta name="twitter:description" content="Kerberos">
 <meta name="twitter:image" content="https://yzsmgg.ch.files.1drv.com/y4mg7U9-IvMhJesVOvjQpzFXY886OfTfXMMEZFvugFlwAzTKE91-1fUFyilTNqMpJiFxfB3g4a317p_o6zBn3lLJzx72M3k5NReI0R09LijIvHpcZ2P6yx-UcZ6rbdAmJMAMgCbQttPsE3BHpyqG1lXLQmoWOWWRdclVYMTlVINnvni5sRabc1hXJQx5Uq2jFGhYonfuLx6HxMSP5VM14sIEg?width=612&height=545&cropmode=none">
 
 
@@ -405,6 +405,7 @@
 
       
         <h2 id="Kerberos"><a href="#Kerberos" class="headerlink" title="Kerberos"></a>Kerberos</h2><p><img src="https://yzsmgg.ch.files.1drv.com/y4mg7U9-IvMhJesVOvjQpzFXY886OfTfXMMEZFvugFlwAzTKE91-1fUFyilTNqMpJiFxfB3g4a317p_o6zBn3lLJzx72M3k5NReI0R09LijIvHpcZ2P6yx-UcZ6rbdAmJMAMgCbQttPsE3BHpyqG1lXLQmoWOWWRdclVYMTlVINnvni5sRabc1hXJQx5Uq2jFGhYonfuLx6HxMSP5VM14sIEg?width=612&height=545&cropmode=none" alt="Kerberos"></p>
+<a id="more"></a>
 <ol>
 <li>客户端向AS发起请求，请求内容是：我是谁（客户端的principal），我要和票据授权服务通信（TGS的principal）等</li>
 <li>AS随机生成一个密码Kc,s (Session Key),并且生成了Tc,s Ts,c两个票据（Ticket）</li>
