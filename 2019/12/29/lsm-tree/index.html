@@ -79,17 +79,21 @@
 
 
 
-<meta name="description" content="one blog a day, keep the doctor away">
-<meta property="og:type" content="website">
-<meta property="og:title" content="message">
-<meta property="og:url" content="http://yoursite.com/message/message.html">
+<meta name="description" content="LSM-Tree(Log Structed Merge Tree ) 由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。 图是hbase的lsm树架构。 它主要分为在内存中的memstore 和 在磁盘上的HFile， 对于新写入的数据， 会先写到memstore中，同时为了防止丢失写一条wal。当me">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lsm-tree">
+<meta property="og:url" content="http://yoursite.com/2019/12/29/lsm-tree/index.html">
 <meta property="og:site_name" content="YP&#39;s blog">
-<meta property="og:description" content="one blog a day, keep the doctor away">
+<meta property="og:description" content="LSM-Tree(Log Structed Merge Tree ) 由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。 图是hbase的lsm树架构。 它主要分为在内存中的memstore 和 在磁盘上的HFile， 对于新写入的数据， 会先写到memstore中，同时为了防止丢失写一条wal。当me">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-05T16:07:13.326Z">
+<meta property="og:image" content="https://yzskgg.ch.files.1drv.com/y4mBkp815cGhSWnJpsvTzZnlJW3oDpNvT9rBuAvtbpCTiOJ7eXMJqiZM3EFsPSCinZwCjpwVIUnXW-j0IUd4ZXHVkS0BTu-kQxgpL8deXrEw1UjGLilVPl-epmiW52vr6lyoUR70Re244dwTzQmOweOwbZB8swNbhhV_kVPeD8qw1nnYCSDtRhXFkohr2gx3tYbijS5bz3XWmX3mRVR2aQFgA?width=732&height=510&cropmode=none">
+<meta property="og:image" content="https://zdsrgg.ch.files.1drv.com/y4mw_KW3tCjO9CbK9E7BRHFBAoBaP-oCD3134ZDgHVX0EuQzDp1196emjU3CmfROyxJlsh-9-vuAjQMTfSr1Ra4ka042nBEWqrI_I2GLgSnRByQVFyMV2GAudRFM6s5uE-DXHktrS6v17Ffg_9I6a-qw87FmNVdmS4IcvutL5JDxN3fJznrKih9zgNFuV2x_RpaVEmcL6sNGlp6S93kh8F_1g?width=834&height=290&cropmode=none">
+<meta property="og:image" content="https://ytsngg.ch.files.1drv.com/y4mgRrQWLgjdZSmDcD1aXJQAOsZLktfylJCl4GSzFnvAS_vQfYoZ1ykypQ0TqONT3bIeFntSzbjSXehP0t0dSxIFKXL9cUblr7uCrzEZ-7H8T21C5STHk6n1jJ_YfQqaUWaYFzYJUw4_ucO-SWCnu5TFuMUd5UbGJs4r-tkzQNBIEtXOgk_sVC1MqZtR_0VvDOAfCa16RNu6uJ88nVm0AVNSg?width=889&height=319&cropmode=none">
+<meta property="og:updated_time" content="2020-01-01T04:07:33.158Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="message">
-<meta name="twitter:description" content="one blog a day, keep the doctor away">
+<meta name="twitter:title" content="lsm-tree">
+<meta name="twitter:description" content="LSM-Tree(Log Structed Merge Tree ) 由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。 图是hbase的lsm树架构。 它主要分为在内存中的memstore 和 在磁盘上的HFile， 对于新写入的数据， 会先写到memstore中，同时为了防止丢失写一条wal。当me">
+<meta name="twitter:image" content="https://yzskgg.ch.files.1drv.com/y4mBkp815cGhSWnJpsvTzZnlJW3oDpNvT9rBuAvtbpCTiOJ7eXMJqiZM3EFsPSCinZwCjpwVIUnXW-j0IUd4ZXHVkS0BTu-kQxgpL8deXrEw1UjGLilVPl-epmiW52vr6lyoUR70Re244dwTzQmOweOwbZB8swNbhhV_kVPeD8qw1nnYCSDtRhXFkohr2gx3tYbijS5bz3XWmX3mRVR2aQFgA?width=732&height=510&cropmode=none">
 
 
 
@@ -119,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/message/message.html">
+  <link rel="canonical" href="http://yoursite.com/2019/12/29/lsm-tree/">
 
 
 
 
 
-  <title>message | YP's blog</title>
+  <title>lsm-tree | YP's blog</title>
   
 
 
@@ -290,33 +294,160 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/29/lsm-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeahpeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YP's blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">message</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
+          <h1 class="post-title" itemprop="name headline">lsm-tree</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-29T23:34:22+08:00">
+                2019-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-      </div>
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/29/lsm-tree/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2019/12/29/lsm-tree/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h2 id="LSM-Tree-Log-Structed-Merge-Tree"><a href="#LSM-Tree-Log-Structed-Merge-Tree" class="headerlink" title="LSM-Tree(Log Structed Merge Tree )"></a>LSM-Tree(Log Structed Merge Tree )</h2><p><img src="https://yzskgg.ch.files.1drv.com/y4mBkp815cGhSWnJpsvTzZnlJW3oDpNvT9rBuAvtbpCTiOJ7eXMJqiZM3EFsPSCinZwCjpwVIUnXW-j0IUd4ZXHVkS0BTu-kQxgpL8deXrEw1UjGLilVPl-epmiW52vr6lyoUR70Re244dwTzQmOweOwbZB8swNbhhV_kVPeD8qw1nnYCSDtRhXFkohr2gx3tYbijS5bz3XWmX3mRVR2aQFgA?width=732&height=510&cropmode=none" alt="lsm-tree"></p>
+<p>由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。</p>
+<p>图是hbase的lsm树架构。 它主要分为在内存中的memstore 和 在磁盘上的HFile， 对于新写入的数据， 会先写到memstore中，同时为了防止丢失写一条wal。当memstore达到一定阈值，会将当前的memstore置为只读，并生成新的memstore 用于新数据写入，同时异步将旧的memstore dump到磁盘（磁盘顺序写），生成HFile。</p>
+<h2 id="读和写"><a href="#读和写" class="headerlink" title="读和写"></a>读和写</h2><p>lsm-tree为了提升写效率到极致，只对磁盘文件append操作。对于数据的删除，会写一行标记delete的新数据， 同理，修改数据是直接写入新数据。<br>对于读请求，会先在memstore中查询， 然后在HFile中找到最新数据。</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><h3 id="布隆优化器"><a href="#布隆优化器" class="headerlink" title="布隆优化器"></a>布隆优化器</h3><p><img src="https://zdsrgg.ch.files.1drv.com/y4mw_KW3tCjO9CbK9E7BRHFBAoBaP-oCD3134ZDgHVX0EuQzDp1196emjU3CmfROyxJlsh-9-vuAjQMTfSr1Ra4ka042nBEWqrI_I2GLgSnRByQVFyMV2GAudRFM6s5uE-DXHktrS6v17Ffg_9I6a-qw87FmNVdmS4IcvutL5JDxN3fJznrKih9zgNFuV2x_RpaVEmcL6sNGlp6S93kh8F_1g?width=834&height=290&cropmode=none" alt="Bloom Filter"></p>
+<p>布隆过滤器能高效的判断数据是否<strong>不存在</strong>某个集合中。加入集合时，会对key进行三次哈希，并将对应位置1。判断是否<strong>不存在</strong>时，只需对key重新哈希，查询是否三位都为1。需要注意的是，即使都是1也只是可能存在。</p>
+<p>布隆过滤器只支持添加，不支持删除。</p>
+<h3 id="大小分级（HBase）"><a href="#大小分级（HBase）" class="headerlink" title="大小分级（HBase）"></a>大小分级（HBase）</h3><p>Minor Compaction: 选取部分小的、相邻的HFile，将它们合并成一个更大的HFile。</p>
+<p>Major Compaction: 将一个Store中所有的HFile合并成一个HFile，这个过程还会完全清理三类无意义数据：被删除的数据、TTL过期数据、版本号超过设定版本号的数据</p>
+<h3 id="分层压缩（LevelDB和RocksDB）"><a href="#分层压缩（LevelDB和RocksDB）" class="headerlink" title="分层压缩（LevelDB和RocksDB）"></a>分层压缩（LevelDB和RocksDB）</h3><p><img src="https://ytsngg.ch.files.1drv.com/y4mgRrQWLgjdZSmDcD1aXJQAOsZLktfylJCl4GSzFnvAS_vQfYoZ1ykypQ0TqONT3bIeFntSzbjSXehP0t0dSxIFKXL9cUblr7uCrzEZ-7H8T21C5STHk6n1jJ_YfQqaUWaYFzYJUw4_ucO-SWCnu5TFuMUd5UbGJs4r-tkzQNBIEtXOgk_sVC1MqZtR_0VvDOAfCa16RNu6uJ88nVm0AVNSg?width=889&height=319&cropmode=none" alt="Level"></p>
+<p>Leve0: 由ImmutableMem Table dump到磁盘, 不同SSTable的key的范围可能重叠，即相同的key可能分散在多个SSTable中。</p>
+<p>Level n(n &gt; 0): 由Level n-1 和 Level n compact生成。每个SSTable的存储一定范围的key， 不存在重叠。</p>
+<p>当读数据时，先在内存中查询，然后从0层开始一层层查询，第0层需要查询多个文件判断key是否存在该层，查询其他层时，只需要查找特定文件。</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/15/Kerberos/" rel="next" title="Kerberos">
+                <i class="fa fa-chevron-left"></i> Kerberos
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -328,7 +459,7 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="message/message.html" data-title="message" data-url="http://yoursite.com/message/message.html">
+      <div class="ds-thread" data-thread-key="2019/12/29/lsm-tree/" data-title="lsm-tree" data-url="http://yoursite.com/2019/12/29/lsm-tree/">
       </div>
     </div>
 
@@ -355,8 +486,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -428,6 +568,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LSM-Tree-Log-Structed-Merge-Tree"><span class="nav-number">1.</span> <span class="nav-text">LSM-Tree(Log Structed Merge Tree )</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读和写"><span class="nav-number">2.</span> <span class="nav-text">读和写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化"><span class="nav-number">3.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#布隆优化器"><span class="nav-number">3.1.</span> <span class="nav-text">布隆优化器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大小分级（HBase）"><span class="nav-number">3.2.</span> <span class="nav-text">大小分级（HBase）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分层压缩（LevelDB和RocksDB）"><span class="nav-number">3.3.</span> <span class="nav-text">分层压缩（LevelDB和RocksDB）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
