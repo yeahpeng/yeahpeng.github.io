@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="actor mod,">
+  <meta name="keywords" content="Actor model,">
 
 
 
@@ -80,17 +80,20 @@
 
 
 <meta name="description" content="Experienced developers have learned to be very careful with unrestricted threads and various blocking mechanisms of a (real-time) operating system, because they often lead to programs that are unsafe">
-<meta name="keywords" content="actor mod">
+<meta name="keywords" content="Actor model">
 <meta property="og:type" content="article">
-<meta property="og:title" content="actor model">
+<meta property="og:title" content="Actor Model">
 <meta property="og:url" content="http://yoursite.com/2020/02/16/actor-model/index.html">
 <meta property="og:site_name" content="YP&#39;s blog">
 <meta property="og:description" content="Experienced developers have learned to be very careful with unrestricted threads and various blocking mechanisms of a (real-time) operating system, because they often lead to programs that are unsafe">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-02-16T08:50:25.337Z">
+<meta property="og:image" content="https://zjtaja.ch.files.1drv.com/y4mSviYLG7eGcN-sHloGAf8Ainqy-81Wlt-sG5jxayG64TTH5Xho-NmJKCCAauMs5Rm1j3qXA5ifyfZ8daG-PGx9R8oZcy8mkZGzjtDLD1KZyeieGclM0zREeQeJIGOrR5nKNNT9M1cFpRFJ6Xik30B0h4gOECY4SjDYiA2lzxBQCL4tYJuqK199wtkdNGFfGod_-SC3u0kVMAXdr9w3SVH0A?width=660&height=475&cropmode=none">
+<meta property="og:image" content="https://zjtbja.ch.files.1drv.com/y4mWVG15jk2VBjnhVXzXxkOmYMRskHSYj-84_Nn0hL7So6JCx6G6JsWRn6tLHpzENVWIytvYImrjOHI_91wSDqH08iZWsLnvtnpSJxoTAv4qrO3SHwMxXSRi49o1dqwwEGic5GOXK7byNxSz-EbA3N1VPy00dVVkq_3eusG9HWunu2foNeVLmxct5PooClM2EMSC72sa0AxnmCt2U1L9Y7nmA?width=660&height=411&cropmode=none">
+<meta property="og:updated_time" content="2020-02-16T09:29:06.285Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="actor model">
+<meta name="twitter:title" content="Actor Model">
 <meta name="twitter:description" content="Experienced developers have learned to be very careful with unrestricted threads and various blocking mechanisms of a (real-time) operating system, because they often lead to programs that are unsafe">
+<meta name="twitter:image" content="https://zjtaja.ch.files.1drv.com/y4mSviYLG7eGcN-sHloGAf8Ainqy-81Wlt-sG5jxayG64TTH5Xho-NmJKCCAauMs5Rm1j3qXA5ifyfZ8daG-PGx9R8oZcy8mkZGzjtDLD1KZyeieGclM0zREeQeJIGOrR5nKNNT9M1cFpRFJ6Xik30B0h4gOECY4SjDYiA2lzxBQCL4tYJuqK199wtkdNGFfGod_-SC3u0kVMAXdr9w3SVH0A?width=660&height=475&cropmode=none">
 
 
 
@@ -126,7 +129,7 @@
 
 
 
-  <title>actor model | YP's blog</title>
+  <title>Actor Model | YP's blog</title>
   
 
 
@@ -320,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">actor model</h1>
+          <h1 class="post-title" itemprop="name headline">Actor Model</h1>
         
 
         <div class="post-meta">
@@ -403,8 +406,35 @@
 
       
         <blockquote>
-<p>Experienced developers have learned to be very careful with unrestricted threads and various blocking mechanisms of a (real-time) operating system, because they often lead to programs that are unsafe and difficult to reason about. Instead, experts apply the following best practices of concurrent programming:<br>1.Keep data isolated and bound to threads. Threads should hide (encapsulate) their private data and other resources, and not share them with the rest of the system.<br>2.Communicate among threads asynchronously via messages (event objects). Using asynchronous events keeps the threads running truly independently, without blocking on each other.<br>3.Threads should spend their lifetime responding to incoming events, so their mainline should consist of an event-loop that handles events one at a time (to completion), thus avoiding any concurrency hazards within a thread itself.<br>While these practices can be applied manually on top of the “free threading” approach, a better way is to use the <em>Active Object (Actor) pattern, which inherently supports and automatically enforces the best practices of concurrent programming.</em></p>
+<p>Experienced developers have learned to be very careful with unrestricted threads and various blocking mechanisms of a (real-time) operating system, because they often lead to programs that are unsafe and difficult to reason about. Instead, experts apply the following best practices of concurrent programming:<br>1.Keep data isolated and bound to threads. Threads should hide (encapsulate) their private data and other resources, and not share them with the rest of the system.<br>2.Communicate among threads asynchronously via messages (event objects). Using asynchronous events keeps the threads running truly independently, without blocking on each other.<br>3.Threads should spend their lifetime responding to incoming events, so their mainline should consist of an event-loop that handles events one at a time (to completion), thus avoiding any concurrency hazards within a thread itself.<br>While these practices can be applied manually on top of the “free threading” approach, a better way is to use the <em>Active Object (Actor) pattern, which inherently supports and automatically enforces the best practices of concurrent programming.</em> <a id="more"></a></p>
 </blockquote>
+<p>这段话是多线程的最佳实践，很好的诠释了Actor的设计理念。Actor之间资源隔离，异步通信。Actor内部串行的处理每个事件（事件驱动）。</p>
+<p>在Actor模型中，任何事物都是Actor。每个Actor都维护私有状态，彼此相互隔离。Actor之间不会共享资源，这使它们通过消息传递通信。在Actor响应信息时， 可以同时做一下三件事。</p>
+<ul>
+<li>发送有限数量的信息给其他Actor(send a finite number of messages to other actors);</li>
+<li>创建有限数量的子Actor(create a finite number of new actors);</li>
+<li>定义收到下一条信息时的行为(designate the behavior to be used for the next message it receives)</li>
+</ul>
+<p>前俩条很好理解，最后一条我认为是更新Actor的状态，对于同一条信息，不同状态的Actor处理行为可能会不同， 也就是”designate the behavior”。</p>
+<h2 id="容错"><a href="#容错" class="headerlink" title="容错"></a>容错</h2><p>与Erlang的<code>Let it crash</code>相同， 我们不需要预想好所有可能遇到的异常， 以及相应对的方式。Actor模型中， 彼此相互隔离。这样， 一个Actor的崩溃不会向上蔓延，引起整个系统的崩溃。 需要有个supervisior (一个Actor)监控 Actor，并在观测到actor崩溃时及时响应。 最常见的处理方式是重置它的状态，并重启。</p>
+<h2 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h2><p>两个Actor在同一台机器和不同机器的通信方式相同，这个特性时Actor模型的项目很容易水平扩展到多台机器上。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>以秒杀为例，每个消费者是 Consumer Actor， 每件商品是 Goods Actor。开始三个消费者同事购买一件商品，但商品存货2件。<br><img src="https://zjtaja.ch.files.1drv.com/y4mSviYLG7eGcN-sHloGAf8Ainqy-81Wlt-sG5jxayG64TTH5Xho-NmJKCCAauMs5Rm1j3qXA5ifyfZ8daG-PGx9R8oZcy8mkZGzjtDLD1KZyeieGclM0zREeQeJIGOrR5nKNNT9M1cFpRFJ6Xik30B0h4gOECY4SjDYiA2lzxBQCL4tYJuqK199wtkdNGFfGod_-SC3u0kVMAXdr9w3SVH0A?width=660&amp;height=475&amp;cropmode=none" alt="actor_model"></p>
+<p>在处里Consumer Actor1的信息时， Goods Actor判断库存足够，便发送信息给Consumer Actor1购买成功。但当处理Consumer Actor3时， 发现没有库存，回复sold out。</p>
+<p><img src="https://zjtbja.ch.files.1drv.com/y4mWVG15jk2VBjnhVXzXxkOmYMRskHSYj-84_Nn0hL7So6JCx6G6JsWRn6tLHpzENVWIytvYImrjOHI_91wSDqH08iZWsLnvtnpSJxoTAv4qrO3SHwMxXSRi49o1dqwwEGic5GOXK7byNxSz-EbA3N1VPy00dVVkq_3eusG9HWunu2foNeVLmxct5PooClM2EMSC72sa0AxnmCt2U1L9Y7nmA?width=660&amp;height=411&amp;cropmode=none" alt="actor_model_2"></p>
+<h2 id="Actor-in-Akka"><a href="#Actor-in-Akka" class="headerlink" title="Actor in Akka"></a>Actor in Akka</h2><p>Akka会在一组线程上运行一组Actor，通常是很多Actor共享一个线程，对某一个Actor的调用可能会在不同的线程上进行处理。一个Actor是一个容器，它包含了 状态，行为，一个邮箱，子Actor和一个监管策略。所有这些包含在一个Actor Reference里。</p>
+<ul>
+<li>Actor 引用： 外界使用，传递actor的方式， 无法获取内部信息（有点类似一个对象）</li>
+<li>状态： 每个actor维护的私有状态</li>
+<li>行为：如何处理收到的信息</li>
+<li>邮箱：在actor内部，只会串行的处理每一条信息， 邮箱的作用，就是临时存储信息，并按一定是顺序让actor消费， 默认是FIFO</li>
+<li>子actor：每个Actor都是一个潜在的监管者：如果它创建了子Actor来委托处理子任务，它会自动地监管它们。子Actor列表维护在Actor的上下文中，Actor可以访问它。</li>
+<li>监管策略：处理子actor异常的机制。</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://en.wikipedia.org/wiki/Actor_model" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Actor_model</a></li>
+<li><a href="https://www.brianstorti.com/the-actor-model/" target="_blank" rel="noopener">https://www.brianstorti.com/the-actor-model/</a></li>
+<li><a href="https://www.kancloud.cn/digest/akka/119421" target="_blank" rel="noopener">https://www.kancloud.cn/digest/akka/119421</a></li>
+</ol>
 
       
     </div>
@@ -422,7 +452,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/actor-mod/" rel="tag"># actor mod</a>
+            <a href="/tags/Actor-model/" rel="tag"># Actor model</a>
           
         </div>
       
@@ -474,7 +504,7 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2020/02/16/actor-model/" data-title="actor model" data-url="http://yoursite.com/2020/02/16/actor-model/">
+      <div class="ds-thread" data-thread-key="2020/02/16/actor-model/" data-title="Actor Model" data-url="http://yoursite.com/2020/02/16/actor-model/">
       </div>
     </div>
 
@@ -501,8 +531,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -541,7 +580,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -574,6 +613,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#容错"><span class="nav-number">1.</span> <span class="nav-text">容错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式"><span class="nav-number">2.</span> <span class="nav-text">分布式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子"><span class="nav-number">3.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Actor-in-Akka"><span class="nav-number">4.</span> <span class="nav-text">Actor in Akka</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

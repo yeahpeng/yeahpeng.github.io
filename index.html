@@ -321,7 +321,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/02/16/actor-model/" itemprop="url">actor model</a></h1>
+                <a class="post-title-link" href="/2020/02/16/actor-model/" itemprop="url">Actor Model</a></h1>
         
 
         <div class="post-meta">
@@ -404,10 +404,8 @@
 
       
         
-          
-          
-Experienced developers have learned to be very careful with unrestricted threads and various blocking mechanisms of a (real-time) operating system, because they often lead to programs that are unsafe
-          ...
+          <blockquote>
+<p>Experienced developers have learned to be very careful with unrestricted threads and various blocking mechanisms of a (real-time) operating system, because they often lead to programs that are unsafe and difficult to reason about. Instead, experts apply the following best practices of concurrent programming:<br>1.Keep data isolated and bound to threads. Threads should hide (encapsulate) their private data and other resources, and not share them with the rest of the system.<br>2.Communicate among threads asynchronously via messages (event objects). Using asynchronous events keeps the threads running truly independently, without blocking on each other.<br>3.Threads should spend their lifetime responding to incoming events, so their mainline should consist of an event-loop that handles events one at a time (to completion), thus avoiding any concurrency hazards within a thread itself.<br>While these practices can be applied manually on top of the “free threading” approach, a better way is to use the <em>Active Object (Actor) pattern, which inherently supports and automatically enforces the best practices of concurrent programming.</em>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/02/16/actor-model/#more" rel="contents">
@@ -417,7 +415,7 @@ Experienced developers have learned to be very careful with unrestricted threads
           <!--/noindex-->
         
       
-    </div>
+    </p></blockquote></div>
     
     
     
@@ -1450,7 +1448,7 @@ Experienced developers have learned to be very careful with unrestricted threads
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
