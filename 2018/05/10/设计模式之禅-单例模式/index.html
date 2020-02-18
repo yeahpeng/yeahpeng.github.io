@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="定义 确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。  两种经典模式经典的单例模式有两种，饿汉式和懒汉式。  饿汉式  12345678910111213public class Singleton &amp;#123;  private static final Singleton singleton = new Singleton();  //限制产生多个对象  private S">
+<meta name="description" content="定义 确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。">
 <meta name="keywords" content="单例模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之禅-单例模式">
 <meta property="og:url" content="http://yoursite.com/2018/05/10/设计模式之禅-单例模式/index.html">
 <meta property="og:site_name" content="YP&#39;s blog">
-<meta property="og:description" content="定义 确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。  两种经典模式经典的单例模式有两种，饿汉式和懒汉式。  饿汉式  12345678910111213public class Singleton &amp;#123;  private static final Singleton singleton = new Singleton();  //限制产生多个对象  private S">
+<meta property="og:description" content="定义 确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-05T16:07:13.326Z">
+<meta property="og:updated_time" content="2020-02-17T02:39:47.210Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之禅-单例模式">
-<meta name="twitter:description" content="定义 确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。  两种经典模式经典的单例模式有两种，饿汉式和懒汉式。  饿汉式  12345678910111213public class Singleton &amp;#123;  private static final Singleton singleton = new Singleton();  //限制产生多个对象  private S">
+<meta name="twitter:description" content="定义 确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。">
 
 
 
@@ -405,18 +405,17 @@
         <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
 <p>确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="两种经典模式"><a href="#两种经典模式" class="headerlink" title="两种经典模式"></a>两种经典模式</h2><p>经典的单例模式有两种，饿汉式和懒汉式。</p>
 <ol>
 <li>饿汉式</li>
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton singleton = <span class="keyword">new</span> Singleton();</span><br><span class="line">  <span class="comment">//限制产生多个对象</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//通过该方法获得实例对象</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getSingleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> singleton;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//类中其他方法，尽量是static</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><code>以空间换时间</code>，饿汉式在一开始加载是就已经创建好实列，需要用时马上返回。</p>
-<ol start="2">
+<ol>
 <li>懒汉式</li>
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> Singleton singleton = <span class="keyword">null</span>;</span><br><span class="line">  <span class="comment">//限制产生多个对象</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//通过该方法获得实例对象</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title">getSingleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(singleton == <span class="keyword">null</span>)&#123;</span><br><span class="line">      singleton = <span class="keyword">new</span> Singleton();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> singleton;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><code>以时间换空间</code>，在第一次需要实列时生成。同时为了解决线程安全，在方法前加<code>sychronized</code>。</p>
 <h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>单例模式具有以下优点：</p>
 <ul>
@@ -558,7 +557,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -580,7 +579,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -402,9 +402,7 @@
       
 
       
-        <p>扩展欧几里得是对贝祖定理求出一组可行解.</p>
-<a id="more"></a>
-
+        <p>扩展欧几里得是对贝祖定理求出一组可行解.<br><a id="more"></a></p>
 <h2 id="贝祖定理"><a href="#贝祖定理" class="headerlink" title="贝祖定理"></a>贝祖定理</h2><blockquote>
 <p>若$a$,$b$是整数,且$gcd(a,b)=d$，那么对于任意的整数$x$,$y$,$ax+by$都一定是$d$的倍数，特别地，一定存在整数$x$,$y$，使$ax+by=d$成立。</p>
 </blockquote>
@@ -417,8 +415,7 @@
 <li>于是,a与b的公因子集合和b与r的公因子集合相同,继而, 最大公因子相同</li>
 </ul>
 <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">gcd</span><span class="params">(a, b)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(b == <span class="number">0</span>) <span class="keyword">return</span> a;</span><br><span class="line">  <span class="keyword">return</span> gcd(b, a % b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="扩展欧几里得"><a href="#扩展欧几里得" class="headerlink" title="扩展欧几里得"></a>扩展欧几里得</h2><p>###证明<br>$ax+by=d$, 其中$gcd(a, b)=d$<br>另$ax_1+by_1=bx_2+a%by_2<br>            = ay_2 + b(x_2-\lfloor \frac ab \rfloor y_2)$<br>则$x_1=y_2$, $y1=x_2-\lfloor \frac ab \rfloor y_2$<br>最后收敛于$a_nx_n+b_ny_n=d$,其中$b_n=d$,$a_n=kb_n$, $y_n=1$, $x_n=0$是一组可行解, </p>
+<h2 id="扩展欧几里得"><a href="#扩展欧几里得" class="headerlink" title="扩展欧几里得"></a>扩展欧几里得</h2><h3 id="证明-1"><a href="#证明-1" class="headerlink" title="证明"></a>证明</h3><p>$ax+by=d$, 其中$gcd(a, b)=d$<br>另$ax_1+by_1=bx_2+a\%by_2<br>            = ay_2 + b(x_2-\lfloor \frac ab \rfloor y_2)$<br>则$x_1=y_2$, $y1=x_2-\lfloor \frac ab \rfloor y_2$<br>最后收敛于$a_nx_n+b_ny_n=d$,其中$b_n=d$,$a_n=kb_n$, $y_n=1$, $x_n=0$是一组可行解, </p>
 <h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ext_gcd</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> &amp;x, <span class="keyword">int</span> &amp;y)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(b == <span class="number">0</span>)&#123;</span><br><span class="line">    y = <span class="number">0</span>;</span><br><span class="line">    x = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> gcd = ext_gcd(b, a % b, x, y);</span><br><span class="line">  <span class="keyword">int</span> t = y;</span><br><span class="line">  y = x - (a/b) * y;</span><br><span class="line">  x = t;</span><br><span class="line">  <span class="keyword">return</span> gcd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
@@ -546,7 +543,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -568,7 +565,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -611,7 +608,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#贝祖定理"><span class="nav-number">1.</span> <span class="nav-text">贝祖定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#欧几里得算法"><span class="nav-number">2.</span> <span class="nav-text">欧几里得算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#证明"><span class="nav-number">2.1.</span> <span class="nav-text">证明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">2.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展欧几里得"><span class="nav-number">3.</span> <span class="nav-text">扩展欧几里得</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-1"><span class="nav-number">3.1.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#贝祖定理"><span class="nav-number">1.</span> <span class="nav-text">贝祖定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#欧几里得算法"><span class="nav-number">2.</span> <span class="nav-text">欧几里得算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#证明"><span class="nav-number">2.1.</span> <span class="nav-text">证明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">2.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展欧几里得"><span class="nav-number">3.</span> <span class="nav-text">扩展欧几里得</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#证明-1"><span class="nav-number">3.1.</span> <span class="nav-text">证明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-1"><span class="nav-number">3.2.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
             
 
           </div>
