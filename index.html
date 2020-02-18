@@ -404,9 +404,7 @@
 
       
         
-          
-          向量时钟（vector clock）是Dynamo用来标记同对象的各个版本， 判断是否存在冲突。它由一系列（Node， Counter）组成。如：D1[(n1, 1),(n2, 3)], 对于Di和Dj两个向量时钟， 当， 我们便可祖先Di是Dj的祖先，也就是Dj和Di不存在冲突，否则两个向量时钟存在冲突。一般server无法处理冲突，需要将两个版本的数据同时返回client， 由client解决
-          ...
+          <p>向量时钟（vector clock）是Dynamo用来标记同对象的各个版本， 判断是否存在冲突。它由一系列（Node， Counter）组成。如：D1[(n1, 1),(n2, 3)], 对于Di和Dj两个向量时钟， 当， 我们便可祖先Di是Dj的祖先，也就是Dj和Di不存在冲突，否则两个向量时钟存在冲突。一般server无法处理冲突，需要将两个版本的数据同时返回client， 由client解决冲突（reconciliation）。
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/02/18/vector-clock/#more" rel="contents">
@@ -416,7 +414,7 @@
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
     
     
     
