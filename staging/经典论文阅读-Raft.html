@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统. 架构复制状态机选举和日志复制状态：     状态 所有服务器上持久存在的     currentTerm 服务器最后一次知道的任期号（初始化为 0，持续递增）   votedFor 在当前">
+<meta name="description" content="Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统. 架构复制状态机选举和日志复制状态：    状态 所有服务器上持久存在的    currentTerm 服务器最后一次知道的任期号（初始化为 0，持续递增）   votedFor 在当前获得">
 <meta name="keywords" content="Raft,一致性算法">
 <meta property="og:type" content="website">
 <meta property="og:title" content="经典论文阅读-Raft">
 <meta property="og:url" content="http://yoursite.com/staging/经典论文阅读-Raft.html">
 <meta property="og:site_name" content="YP&#39;s blog">
-<meta property="og:description" content="Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统. 架构复制状态机选举和日志复制状态：     状态 所有服务器上持久存在的     currentTerm 服务器最后一次知道的任期号（初始化为 0，持续递增）   votedFor 在当前">
+<meta property="og:description" content="Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统. 架构复制状态机选举和日志复制状态：    状态 所有服务器上持久存在的    currentTerm 服务器最后一次知道的任期号（初始化为 0，持续递增）   votedFor 在当前获得">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2019-11-05T16:07:13.326Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="经典论文阅读-Raft">
-<meta name="twitter:description" content="Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统. 架构复制状态机选举和日志复制状态：     状态 所有服务器上持久存在的     currentTerm 服务器最后一次知道的任期号（初始化为 0，持续递增）   votedFor 在当前">
+<meta name="twitter:description" content="Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统. 架构复制状态机选举和日志复制状态：    状态 所有服务器上持久存在的    currentTerm 服务器最后一次知道的任期号（初始化为 0，持续递增）   votedFor 在当前获得">
 
 
 
@@ -310,7 +310,6 @@
         
           <p>Raft 是一种管理日志的一致性算法, 为非拜占庭问题提出解决方案.它提供了和 Paxos 算法相同的功能和性能，但是它的算法结构和 Paxos 不同，使得 Raft 算法更加容易理解并且更容易构建实际的系统.</p>
 <h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><h2 id="复制状态机"><a href="#复制状态机" class="headerlink" title="复制状态机"></a>复制状态机</h2><h2 id="选举和日志复制"><a href="#选举和日志复制" class="headerlink" title="选举和日志复制"></a>选举和日志复制</h2><p><strong>状态</strong>：</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -318,8 +317,7 @@
 <th>所有服务器上持久存在的</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>currentTerm</td>
 <td>服务器最后一次知道的任期号（初始化为 0，持续递增）</td>
 </tr>
@@ -331,10 +329,7 @@
 <td>log[]</td>
 <td>日志条目集；每一个条目包含一个用户状态机执行的指令，和收到时的任期号</td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="table-container">
+</tbody></table>
 <table>
 <thead>
 <tr>
@@ -342,8 +337,7 @@
 <th>所有服务器上经常变的</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>commitIndex</td>
 <td>已知的最大的已经被提交的日志条目的索引值</td>
 </tr>
@@ -351,10 +345,7 @@
 <td>lastApplied</td>
 <td>最后被应用到状态机的日志条目索引值（初始化为 0，持续递增）</td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="table-container">
+</tbody></table>
 <table>
 <thead>
 <tr>
@@ -362,8 +353,7 @@
 <th>在领导人里经常改变的 （选举后重新初始化）</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>nextIndex[]</td>
 <td>对于每一个服务器，需要发送给他的下一个日志条目的索引值（初始化为领导人最后索引值加一）</td>
 </tr>
@@ -371,12 +361,9 @@
 <td>matchIndex[]</td>
 <td>对于每一个服务器，已经复制给他的日志的最高索引值</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p><strong>附加日志 RPC</strong>：</p>
 <p>由领导人负责调用来复制日志指令；也会用作heartbeat</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -384,8 +371,7 @@
 <th>解释</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>term</td>
 <td>领导人的任期号</td>
 </tr>
@@ -409,10 +395,7 @@
 <td>leaderCommit</td>
 <td>领导人已经提交的日志的索引值</td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="table-container">
+</tbody></table>
 <table>
 <thead>
 <tr>
@@ -420,8 +403,7 @@
 <th>解释</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>term</td>
 <td>当前的任期号，用于领导人去更新自己</td>
 </tr>
@@ -429,9 +411,7 @@
 <td>success</td>
 <td>跟随者包含了匹配上 prevLogIndex 和 prevLogTerm 的日志时为真</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>接收者实现：</p>
 <ol>
 <li>如果 <code>term &lt; currentTerm</code> 就返回 false </li>
@@ -442,7 +422,6 @@
 </ol>
 <p><strong>请求投票 RPC</strong>：</p>
 <p>由候选人负责调用用来征集选票</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -450,8 +429,7 @@
 <th>解释</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>term</td>
 <td>候选人的任期号</td>
 </tr>
@@ -467,10 +445,7 @@
 <td>lastLogTerm</td>
 <td>候选人最后日志条目的任期号</td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="table-container">
+</tbody></table>
 <table>
 <thead>
 <tr>
@@ -478,8 +453,7 @@
 <th>解释</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>term</td>
 <td>当前任期号，以便于候选人去更新自己的任期号</td>
 </tr>
@@ -487,9 +461,7 @@
 <td>voteGranted</td>
 <td>候选人赢得了此张选票时为真</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>接收者实现：</p>
 <ol>
 <li>如果<code>term &lt; currentTerm</code>返回 false</li>
