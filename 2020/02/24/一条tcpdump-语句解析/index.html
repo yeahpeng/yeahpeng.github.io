@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="设计原则,单一职责原则,里氏替换原则,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,18 +79,19 @@
 
 
 
-<meta name="description" content="一. 单一职责原则(Single Responsibility Principle,SRP) There should never be more than one reason for a class to change.">
-<meta name="keywords" content="设计原则,单一职责原则,里氏替换原则">
+<meta name="description" content="1tcpdump -s 0 -A -i lo &amp;apos;tcp port 22801 and tcp[((tcp[12:1] &amp;amp; 0xf0) &amp;gt;&amp;gt; 2):4] = 0x50555420&amp;apos;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="设计模式之禅-设计原则">
-<meta property="og:url" content="http://yoursite.com/2018/05/02/设计模式之禅-设计原则/index.html">
+<meta property="og:title" content="一条tcpdump 语句解析">
+<meta property="og:url" content="http://yoursite.com/2020/02/24/一条tcpdump-语句解析/index.html">
 <meta property="og:site_name" content="YP&#39;s blog">
-<meta property="og:description" content="一. 单一职责原则(Single Responsibility Principle,SRP) There should never be more than one reason for a class to change.">
+<meta property="og:description" content="1tcpdump -s 0 -A -i lo &amp;apos;tcp port 22801 and tcp[((tcp[12:1] &amp;amp; 0xf0) &amp;gt;&amp;gt; 2):4] = 0x50555420&amp;apos;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-05T16:07:13.326Z">
+<meta property="og:image" content="https://yzs8ja.ch.files.1drv.com/y4mJcYK5msVbT2NF62s0_MRTYSdskWh2QIfRXgTudYs393VNI5DgKGNPS9r-jHAfDxZhV5bpjkdXapNMO0IN-sPCbttOHLCJbys8z2p685B_B0pHd9U9WVECQDDG49Mx140obGpi8cmJmGlgIww3daXf04sGwkdTP8XtUIgqLtcq6KsSaLBVq7EIr0LV1-9nJQj5OfFDXpOUrZxUv54qnq6kA?width=660&height=206&cropmode=none">
+<meta property="og:updated_time" content="2020-02-24T15:42:08.886Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="设计模式之禅-设计原则">
-<meta name="twitter:description" content="一. 单一职责原则(Single Responsibility Principle,SRP) There should never be more than one reason for a class to change.">
+<meta name="twitter:title" content="一条tcpdump 语句解析">
+<meta name="twitter:description" content="1tcpdump -s 0 -A -i lo &amp;apos;tcp port 22801 and tcp[((tcp[12:1] &amp;amp; 0xf0) &amp;gt;&amp;gt; 2):4] = 0x50555420&amp;apos;">
+<meta name="twitter:image" content="https://yzs8ja.ch.files.1drv.com/y4mJcYK5msVbT2NF62s0_MRTYSdskWh2QIfRXgTudYs393VNI5DgKGNPS9r-jHAfDxZhV5bpjkdXapNMO0IN-sPCbttOHLCJbys8z2p685B_B0pHd9U9WVECQDDG49Mx140obGpi8cmJmGlgIww3daXf04sGwkdTP8XtUIgqLtcq6KsSaLBVq7EIr0LV1-9nJQj5OfFDXpOUrZxUv54qnq6kA?width=660&height=206&cropmode=none">
 
 
 
@@ -120,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/02/设计模式之禅-设计原则/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/24/一条tcpdump-语句解析/">
 
 
 
 
 
-  <title>设计模式之禅-设计原则 | YP's blog</title>
+  <title>一条tcpdump 语句解析 | YP's blog</title>
   
 
 
@@ -303,7 +304,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/02/设计模式之禅-设计原则/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/24/一条tcpdump-语句解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeahpeng">
@@ -320,7 +321,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">设计模式之禅-设计原则</h1>
+          <h1 class="post-title" itemprop="name headline">一条tcpdump 语句解析</h1>
         
 
         <div class="post-meta">
@@ -332,8 +333,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T00:49:15+08:00">
-                2018-05-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-24T23:07:56+08:00">
+                2020-02-24
               </time>
             
 
@@ -343,28 +344,6 @@
           </span>
 
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -373,8 +352,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/05/02/设计模式之禅-设计原则/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/02/设计模式之禅-设计原则/" itemprop="commentCount"></span>
+                <a href="/2020/02/24/一条tcpdump-语句解析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2020/02/24/一条tcpdump-语句解析/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -402,69 +381,23 @@
       
 
       
-        <h2 id="一-单一职责原则-Single-Responsibility-Principle-SRP"><a href="#一-单一职责原则-Single-Responsibility-Principle-SRP" class="headerlink" title="一. 单一职责原则(Single Responsibility Principle,SRP)"></a>一. 单一职责原则(Single Responsibility Principle,SRP)</h2><blockquote>
-<p>There should never be more than one reason for a class to change.<a id="more"></a></p>
-</blockquote>
-<h2 id="二-里氏替换原则"><a href="#二-里氏替换原则" class="headerlink" title="二. 里氏替换原则"></a>二. 里氏替换原则</h2><blockquote>
-<p>如果对每一个类型为S的对象o1，都有类型为T的对象o2，使得以T定义的所有程序P在所有的对象o1都代换成o2时，程序P的行为没有发生变化，那么类型S是类型T的子类型。</p>
-</blockquote>
-<p>里氏替换原则所定义的规范：</p>
-<ul>
-<li>子类必须完全实现父类的方法</li>
-<li>子类可以有自己的个性</li>
-<li>覆盖或实现父类的方法时输入参数可以被放大</li>
-<li>覆写或实现父类的方法时输出结果可以被缩小</li>
-</ul>
-<p>在项目中，采用里氏替换原则时，尽量避免子类的“个性”，一旦子类有“个性”，这个子类和父类之间的关系就很难调和了，把子类当做父类使用，子类的“个性”被抹杀——委屈了点；把子类单独作为一个业务来使用，则会让代码间的耦合关系变得扑朔迷离——缺乏类替换的标准。</p>
-<h2 id="三-依赖倒置原则-Dependence-Inversion-Principle-DIP"><a href="#三-依赖倒置原则-Dependence-Inversion-Principle-DIP" class="headerlink" title="三. 依赖倒置原则(Dependence Inversion Principle,DIP)"></a>三. 依赖倒置原则(Dependence Inversion Principle,DIP)</h2><blockquote>
-<p>High level modules should not depend upon low level modules.Both should depend upon abstractions.Abstractions should not depend upon details.Details should depend upon abstractions.</p>
-</blockquote>
-<p>依赖倒置原则在Java语言中的表现就是：</p>
-<ul>
-<li>模块间的依赖通过抽象发生，实现类之间不发生直接的依赖关系，其依赖关系是通过接口或抽象类产生的</li>
-<li>接口或抽象类不依赖于实现类</li>
-<li>实现类依赖接口或抽象类</li>
-</ul>
-<p>更加精简的定义就是“面向接口编程”——OOD（Object-Oriented Design，面向对象设计）的精髓之一。<br>依赖倒置原则的本质就是通过抽象（接口或抽象类）使各个类或模块的实现彼此独立，不互相影响，实现模块间的松耦合，在实践中，需要遵循以下几个原则:</p>
-<ul>
-<li>每个类尽量都有接口或抽象类，或者抽象类和接口两者都具备</li>
-<li>变量的表面类型尽量是接口或者是抽象类</li>
-<li>任何类都不应该从具体类派生</li>
-<li>尽量不要覆写基类的方法</li>
-<li>结合里氏替换原则使用</li>
-</ul>
-<p>采用依赖倒置原则可以减少类间的耦合性，提高系统的稳定性，降低并行开发引起的风险，提高代码的可读性和可维护性。</p>
-<h2 id="四-接口隔离原则"><a href="#四-接口隔离原则" class="headerlink" title="四. 接口隔离原则"></a>四. 接口隔离原则</h2><blockquote>
-<p>Clients should not be forced to depend upon interfaces that they don’t use.<br>The dependency of one class to another one should depend on the smallest possible interface.</p>
-</blockquote>
-<p>接口隔离原则是对接口进行规范约束，其包含以下4层含义：</p>
-<ul>
-<li>接口要尽量小</li>
-<li>接口要高内聚</li>
-<li>定制服务</li>
-<li>接口设计是有限度的</li>
-</ul>
-<h2 id="五-迪米特法则-Law-of-Demeter，LoD"><a href="#五-迪米特法则-Law-of-Demeter，LoD" class="headerlink" title="五. 迪米特法则(Law of Demeter，LoD)"></a>五. 迪米特法则(Law of Demeter，LoD)</h2><blockquote>
-<p>一个对象应该对其他对象有最少的了解。</p>
-</blockquote>
-<p>迪米特法则对类的低耦合提出了明确的要求，其包含以下4层含义。</p>
-<ul>
-<li>只和朋友交流</li>
-<li>朋友间也是有距离的</li>
-<li>是自己的就是自己的</li>
-<li>谨慎使用Serializable</li>
-</ul>
-<p>迪米特法则的核心观念就是类间解耦，弱耦合，只有弱耦合了以后，类的复用率才可以提高。其要求的结果就是产生了大量的中转或跳转类，导致系统的复杂性提高，同时也为维护带来了难度。</p>
-<h2 id="六-开闭原则"><a href="#六-开闭原则" class="headerlink" title="六. 开闭原则"></a>六. 开闭原则</h2><blockquote>
-<p>Software entities like classes,modules and functions should be open for extension but closed for modifications.</p>
-</blockquote>
-<p>在实践中，需要注意：</p>
-<ul>
-<li>抽象约束</li>
-<li>元数据（metadata）控制模块行为</li>
-<li>制定项目章程</li>
-<li>封装变化</li>
-</ul>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -s 0 -A -i lo &apos;tcp port 22801 and tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x50555420&apos;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>-s 0:  抓取数据包时默认抓取长度为68字节, 设置成0表示不限制长度，即抓取完整的数据包。<br>-A : 以ASCII形式输出内容。<br>-i lo: 过滤lo(localhost)网卡 的数据包， ifconfig 可查看所有网卡。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x50555420</span><br></pre></td></tr></table></figure>
+
+<p>这部分判断有些令人迷惑， 需要详细解释。</p>
+<p><img src="https://yzs8ja.ch.files.1drv.com/y4mJcYK5msVbT2NF62s0_MRTYSdskWh2QIfRXgTudYs393VNI5DgKGNPS9r-jHAfDxZhV5bpjkdXapNMO0IN-sPCbttOHLCJbys8z2p685B_B0pHd9U9WVECQDDG49Mx140obGpi8cmJmGlgIww3daXf04sGwkdTP8XtUIgqLtcq6KsSaLBVq7EIr0LV1-9nJQj5OfFDXpOUrZxUv54qnq6kA?width=660&height=206&cropmode=none" alt="tcp_head"></p>
+<p><code>tcp[12:1]</code> 表示获取tcp第十二字节开始后的一个字节， <code>tcp[12:1]</code>具体是什么内容呢， 需要看一下tcp表头结构， 从图中可以知道 <code>tcp[12:1]</code> 是数据偏移 和一些保留位， 看起来只有前4位（数据偏移）有实际用途。<br> <code>tcp[12:1] &amp; 0xf0</code> 将后四位置零， 可能有人想， 如果想获取前4位， 直接右移4位便可以， 为何要多次一举先置零？  数据偏移的最小单位是32bit（4字节）， 也就是tcp表头最长15 * 32bit， 也就是60字节，  如果要将数据偏移转换成字节为单位需要右移两位， <code>tcp[12:1] &amp; 0xf0</code>获取到的是左移4位后结果， 也就是说数据偏移字节为tcp[12:1] &amp; 0xf0) &gt;&gt; 2</p>
+<p> 数据偏移字节为tcp[12:1] &amp; 0xf0) &gt;&gt; 2<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4]</span><br></pre></td></tr></table></figure></p>
+<p>这个可以看成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$dataOffset = (tcp[12:1] &amp; 0xf0) &gt;&gt; 2</span><br><span class="line">tcp[$dataOffset:4]</span><br></pre></td></tr></table></figure>
+
+<p>获取实际数据最开始的4个字节<br> <code>10x50555420</code>为<code>PUT</code>4个字符的ASCII 的16进制形式</p>
+<p>这条tcpdump的语义是， 筛选内部(locahost)转发到22801端口的http put请求， 并以ASCII 形式输出该包全部内容。</p>
+<p>需要注意的是，https 数据经过加密， 无法筛选。</p>
 
       
     </div>
@@ -480,16 +413,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/设计原则/" rel="tag"># 设计原则</a>
-          
-            <a href="/tags/单一职责原则/" rel="tag"># 单一职责原则</a>
-          
-            <a href="/tags/里氏替换原则/" rel="tag"># 里氏替换原则</a>
-          
-        </div>
-      
 
       
       
@@ -499,8 +422,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/08/07/erlang学习笔记（二）/" rel="next" title="Erlang学习笔记（二）">
-                <i class="fa fa-chevron-left"></i> Erlang学习笔记（二）
+              <a href="/2020/02/18/vector-clock/" rel="next" title="vector clock">
+                <i class="fa fa-chevron-left"></i> vector clock
               </a>
             
           </div>
@@ -508,10 +431,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/10/设计模式之禅-单例模式/" rel="prev" title="设计模式之禅-单例模式">
-                设计模式之禅-单例模式 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -542,7 +461,7 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/05/02/设计模式之禅-设计原则/" data-title="设计模式之禅-设计原则" data-url="http://yoursite.com/2018/05/02/设计模式之禅-设计原则/">
+      <div class="ds-thread" data-thread-key="2020/02/24/一条tcpdump-语句解析/" data-title="一条tcpdump 语句解析" data-url="http://yoursite.com/2020/02/24/一条tcpdump-语句解析/">
       </div>
     </div>
 
@@ -569,17 +488,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -651,22 +561,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-单一职责原则-Single-Responsibility-Principle-SRP"><span class="nav-number">1.</span> <span class="nav-text">一. 单一职责原则(Single Responsibility Principle,SRP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-里氏替换原则"><span class="nav-number">2.</span> <span class="nav-text">二. 里氏替换原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-依赖倒置原则-Dependence-Inversion-Principle-DIP"><span class="nav-number">3.</span> <span class="nav-text">三. 依赖倒置原则(Dependence Inversion Principle,DIP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-接口隔离原则"><span class="nav-number">4.</span> <span class="nav-text">四. 接口隔离原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-迪米特法则-Law-of-Demeter，LoD"><span class="nav-number">5.</span> <span class="nav-text">五. 迪米特法则(Law of Demeter，LoD)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-开闭原则"><span class="nav-number">6.</span> <span class="nav-text">六. 开闭原则</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
