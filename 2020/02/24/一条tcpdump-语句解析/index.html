@@ -405,19 +405,14 @@
 
       
         <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -s 0 -A -i lo &apos;tcp port 22801 and tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x50555420&apos;</span><br></pre></td></tr></table></figure>
-
 <a id="more"></a>
-
 <p>-s 0:  抓取数据包时默认抓取长度为68字节, 设置成0表示不限制长度，即抓取完整的数据包。<br>-A : 以ASCII形式输出内容。<br>-i lo: 过滤lo(localhost)网卡 的数据包， ifconfig 可查看所有网卡。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x50555420</span><br></pre></td></tr></table></figure>
-
 <p>这部分判断有些令人迷惑， 需要详细解释。</p>
-<p><img src="https://yzs8ja.ch.files.1drv.com/y4mJcYK5msVbT2NF62s0_MRTYSdskWh2QIfRXgTudYs393VNI5DgKGNPS9r-jHAfDxZhV5bpjkdXapNMO0IN-sPCbttOHLCJbys8z2p685B_B0pHd9U9WVECQDDG49Mx140obGpi8cmJmGlgIww3daXf04sGwkdTP8XtUIgqLtcq6KsSaLBVq7EIr0LV1-9nJQj5OfFDXpOUrZxUv54qnq6kA?width=660&height=206&cropmode=none" alt="tcp_head"></p>
+<p><img src="https://yzs8ja.ch.files.1drv.com/y4mJcYK5msVbT2NF62s0_MRTYSdskWh2QIfRXgTudYs393VNI5DgKGNPS9r-jHAfDxZhV5bpjkdXapNMO0IN-sPCbttOHLCJbys8z2p685B_B0pHd9U9WVECQDDG49Mx140obGpi8cmJmGlgIww3daXf04sGwkdTP8XtUIgqLtcq6KsSaLBVq7EIr0LV1-9nJQj5OfFDXpOUrZxUv54qnq6kA?width=660&amp;height=206&amp;cropmode=none" alt="tcp_head"></p>
 <p><code>tcp[12:1]</code> 表示获取tcp第十二字节开始后的一个字节， <code>tcp[12:1]</code>具体是什么内容呢， 需要看一下tcp表头结构， 从图中可以知道 <code>tcp[12:1]</code> 是数据偏移 和一些保留位， 看起来只有前4位（数据偏移）有实际用途。<br> <code>tcp[12:1] &amp; 0xf0</code> 将后四位置零， 可能有人想， 如果想获取前4位， 直接右移4位便可以， 为何要多次一举先置零？  数据偏移的最小单位是32bit（4字节）， 也就是tcp表头最长15 * 32bit， 也就是60字节，  如果要将数据偏移转换成字节为单位需要右移两位， <code>tcp[12:1] &amp; 0xf0</code>获取到的是左移4位后结果， 也就是说数据偏移字节为tcp[12:1] &amp; 0xf0) &gt;&gt; 2</p>
 <p> 数据偏移字节为tcp[12:1] &amp; 0xf0) &gt;&gt; 2<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4]</span><br></pre></td></tr></table></figure></p>
-<p>这个可以看成</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$dataOffset = (tcp[12:1] &amp; 0xf0) &gt;&gt; 2</span><br><span class="line">tcp[$dataOffset:4]</span><br></pre></td></tr></table></figure>
-
+<p>这个可以看成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$dataOffset = (tcp[12:1] &amp; 0xf0) &gt;&gt; 2</span><br><span class="line">tcp[$dataOffset:4]</span><br></pre></td></tr></table></figure></p>
 <p>获取实际数据最开始的4个字节<br> <code>10x50555420</code>为<code>PUT</code>4个字符的ASCII 的16进制形式</p>
 <p>经过上述分析可知道，这条tcpdump的语句的含义是： 筛选内部(locahost)转发到22801端口的http put请求， 并以ASCII 形式输出该包全部内容。</p>
 <p>需要注意的是，https 数据经过加密， 无法筛选。</p>
@@ -460,6 +455,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/08/Google_Spanner/" rel="prev" title="Spanner(2012)">
+                Spanner(2012) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -535,7 +534,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -557,7 +556,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

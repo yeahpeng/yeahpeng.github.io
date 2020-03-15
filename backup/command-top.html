@@ -308,9 +308,7 @@
       <div class="post-body">
         
         
-          <h2 id="top"><a href="#top" class="headerlink" title="top"></a>top</h2><p>展示任务、Cpu、内存以及交换分区当前状态，按<code>q</code>退出。<a id="more"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@TG1704 log]# top</span><br><span class="line">top - 14:06:23 up 70 days, 16:44,  2 users,  load average: 1.25, 1.32, 1.35</span><br><span class="line">Tasks: 206 total,   1 running, 205 sleeping,   0 stopped,   0 zombie</span><br><span class="line">Cpu(s):  5.9%us,  3.4%sy,  0.0%ni, 90.4%id,  0.0%wa,  0.0%hi,  0.2%si,  0.0%st</span><br><span class="line">Mem:  32949016k total, 14411180k used, 18537836k free,   169884k buffers</span><br><span class="line">Swap: 32764556k total,        0k used, 32764556k free,  3612636k cached</span><br><span class="line">  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND                                                                </span><br><span class="line">28894 root      22   0 1501m 405m  10m S 52.2  1.3   2534:16 java                                                                   </span><br><span class="line">18249 root      18   0 3201m 1.9g  11m S 35.9  6.0 569:39.41 java                                                                   </span><br><span class="line"> 2808 root      25   0 3333m 1.0g  11m S 24.3  3.1 526:51.85 java                                                                   </span><br><span class="line">25668 root      23   0 3180m 704m  11m S 14.0  2.2 360:44.53 java                                                                   </span><br><span class="line">  574 root      25   0 3168m 611m  10m S 12.6  1.9 556:59.63 java                                                                   </span><br><span class="line"> 1599 root      20   0 3237m 1.9g  11m S 12.3  6.2 262:01.14 java</span><br></pre></td></tr></table></figure>
-
+          <h2 id="top"><a href="#top" class="headerlink" title="top"></a>top</h2><p>展示任务、Cpu、内存以及交换分区当前状态，按<code>q</code>退出。<a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@TG1704 log]# top</span><br><span class="line">top - 14:06:23 up 70 days, 16:44,  2 users,  load average: 1.25, 1.32, 1.35</span><br><span class="line">Tasks: 206 total,   1 running, 205 sleeping,   0 stopped,   0 zombie</span><br><span class="line">Cpu(s):  5.9%us,  3.4%sy,  0.0%ni, 90.4%id,  0.0%wa,  0.0%hi,  0.2%si,  0.0%st</span><br><span class="line">Mem:  32949016k total, 14411180k used, 18537836k free,   169884k buffers</span><br><span class="line">Swap: 32764556k total,        0k used, 32764556k free,  3612636k cached</span><br><span class="line">  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND                                                                </span><br><span class="line">28894 root      22   0 1501m 405m  10m S 52.2  1.3   2534:16 java                                                                   </span><br><span class="line">18249 root      18   0 3201m 1.9g  11m S 35.9  6.0 569:39.41 java                                                                   </span><br><span class="line"> 2808 root      25   0 3333m 1.0g  11m S 24.3  3.1 526:51.85 java                                                                   </span><br><span class="line">25668 root      23   0 3180m 704m  11m S 14.0  2.2 360:44.53 java                                                                   </span><br><span class="line">  574 root      25   0 3168m 611m  10m S 12.6  1.9 556:59.63 java                                                                   </span><br><span class="line"> 1599 root      20   0 3237m 1.9g  11m S 12.3  6.2 262:01.14 java</span><br></pre></td></tr></table></figure></p>
 <p>统计信息区：</p>
 <p>前五行是当前系统情况整体的统计信息区。</p>
 <p><strong>第一行，任务队列信息，同 uptime 命令的执行结果，具体参数说明情况如下：</strong><br>14:06:23 — 当前系统时间<br>up 70 days, 16:44 — 系统已经运行了70天16小时44分钟（<br>2 users — 当前有2个用户登录系统<br>load average: 1.15, 1.42, 1.44 — load average后面的三个数分别是1分钟、5分钟、15分钟的负载情况。<br>load average数据是每隔5秒钟检查一次活跃的进程数，然后按特定算法计算出的数值。如果这个数除以逻辑CPU的数量，结果高于5的时候就表明系统在超负荷运转了。</p>
@@ -320,14 +318,16 @@
 <p><strong>第五行，swap交换分区信息，具体信息说明如下：</strong><br>32764556k total — 交换区总量（32GB）<br>0k used — 使用的交换区总量（0K）<br>32764556k free — 空闲交换区总量（32GB）<br>3612636k cached — 缓冲的交换区总量（3.6GB）</p>
 <p><strong>第六行，空行。</strong></p>
 <p><strong>第七行以下：各进程（任务）的状态监控，项目列信息说明如下：</strong><br>PID — 进程id<br>USER — 进程所有者<br>PR — 进程优先级<br>NI — nice值。负值表示高优先级，正值表示低优先级<br>VIRT — 进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES<br>RES — 进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA<br>SHR — 共享内存大小，单位kb<br>S — 进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程<br>%CPU — 上次更新到现在的CPU时间占用百分比<br>%MEM — 进程使用的物理内存百分比<br>TIME+ — 进程使用的CPU时间总计，单位1/100秒<br>COMMAND — 进程名称（命令名/命令行）</p>
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><table>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>命令</th>
 <th>含义</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>top -u user</td>
 <td>显示指定用户</td>
 </tr>
@@ -335,15 +335,19 @@
 <td>top -Hp 574</td>
 <td>显示574进程的具体线程信息</td>
 </tr>
-</tbody></table>
-<h2 id="top交互命令"><a href="#top交互命令" class="headerlink" title="top交互命令"></a>top交互命令</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="top交互命令"><a href="#top交互命令" class="headerlink" title="top交互命令"></a>top交互命令</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>命令</th>
 <th>含义</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>c</td>
 <td>显示进程目录</td>
 </tr>
@@ -355,7 +359,9 @@
 <td>k</td>
 <td>终止一个进程</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 
         
       </div>
@@ -431,7 +437,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -453,7 +459,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

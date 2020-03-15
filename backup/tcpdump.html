@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="options   OPTION 含义    A 以ASCII形式输出每个包   i 监听网卡（ifconfig 查看）   w 将原始包写入指定文件（-r 回放）   example12345678910111213sudo tcpdump -A host google.com &amp;gt; tcpdump1#截获主机210.27.48.1 和主机210.27.48.2 或210.27.48.3的通">
+<meta name="description" content="options    OPTION 含义     A 以ASCII形式输出每个包   i 监听网卡（ifconfig 查看）   w 将原始包写入指定文件（-r 回放）     example12345678910111213sudo tcpdump -A host google.com &amp;gt; tcpdump1#截获主机210.27.48.1 和主机210.27.48.2 或210.27.48">
 <meta name="keywords" content="tcpdump,linux">
 <meta property="og:type" content="website">
 <meta property="og:title" content="tcpdump">
 <meta property="og:url" content="http://yoursite.com/backup/tcpdump.html">
 <meta property="og:site_name" content="YP&#39;s blog">
-<meta property="og:description" content="options   OPTION 含义    A 以ASCII形式输出每个包   i 监听网卡（ifconfig 查看）   w 将原始包写入指定文件（-r 回放）   example12345678910111213sudo tcpdump -A host google.com &amp;gt; tcpdump1#截获主机210.27.48.1 和主机210.27.48.2 或210.27.48.3的通">
+<meta property="og:description" content="options    OPTION 含义     A 以ASCII形式输出每个包   i 监听网卡（ifconfig 查看）   w 将原始包写入指定文件（-r 回放）     example12345678910111213sudo tcpdump -A host google.com &amp;gt; tcpdump1#截获主机210.27.48.1 和主机210.27.48.2 或210.27.48">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2019-12-15T15:34:09.195Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tcpdump">
-<meta name="twitter:description" content="options   OPTION 含义    A 以ASCII形式输出每个包   i 监听网卡（ifconfig 查看）   w 将原始包写入指定文件（-r 回放）   example12345678910111213sudo tcpdump -A host google.com &amp;gt; tcpdump1#截获主机210.27.48.1 和主机210.27.48.2 或210.27.48.3的通">
+<meta name="twitter:description" content="options    OPTION 含义     A 以ASCII形式输出每个包   i 监听网卡（ifconfig 查看）   w 将原始包写入指定文件（-r 回放）     example12345678910111213sudo tcpdump -A host google.com &amp;gt; tcpdump1#截获主机210.27.48.1 和主机210.27.48.2 或210.27.48">
 
 
 
@@ -308,14 +308,16 @@
       <div class="post-body">
         
         
-          <h2 id="options"><a href="#options" class="headerlink" title="options"></a>options</h2><table>
+          <h2 id="options"><a href="#options" class="headerlink" title="options"></a>options</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>OPTION</th>
 <th>含义</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>A</td>
 <td>以ASCII形式输出每个包</td>
 </tr>
@@ -327,9 +329,10 @@
 <td>w</td>
 <td>将原始包写入指定文件（-r 回放）</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo tcpdump -A host google.com &gt; tcpdump1</span><br><span class="line"></span><br><span class="line"><span class="comment">#截获主机210.27.48.1 和主机210.27.48.2 或210.27.48.3的通信</span></span><br><span class="line">tcpdump host 210.27.48.1 and \(210.27.48.2 or 210.27.48.3 \)</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取主机210.27.48.1除了和主机210.27.48.2之外所有主机通信的ip包</span></span><br><span class="line">tcpdump ip host 210.27.48.1 and ! 210.27.48.2</span><br><span class="line"></span><br><span class="line"><span class="comment">#截获主机hostname发送的所有数据</span></span><br><span class="line">tcpdump -i eth0 src host hostname</span><br><span class="line"></span><br><span class="line"><span class="comment">#监视所有送到主机hostname的数据包</span></span><br><span class="line">tcpdump -i eth0 dst host hostname</span><br></pre></td></tr></table></figure>
-
 <h2 id="抓取指定header"><a href="#抓取指定header" class="headerlink" title="抓取指定header"></a>抓取指定header</h2><p><a href="https://stackoverflow.com/questions/4777042/can-i-use-tcpdump-to-get-http-requests-response-header-and-response-body" target="_blank" rel="noopener">https://stackoverflow.com/questions/4777042/can-i-use-tcpdump-to-get-http-requests-response-header-and-response-body</a><br><a href="https://www.wireshark.org/tools/string-cf.html" target="_blank" rel="noopener">https://www.wireshark.org/tools/string-cf.html</a></p>
 
         
@@ -406,7 +409,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -428,7 +431,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

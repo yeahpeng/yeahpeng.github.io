@@ -411,18 +411,18 @@
         <p>向量时钟（vector clock）是Dynamo用来标记同对象的各个版本， 判断是否存在冲突。它由一系列（Node， Counter）组成。如：D1[(n1, 1),(n2, 3)], 对于Di和Dj两个向量时钟， 当， 我们便可祖先Di是Dj的祖先，也就是Dj和Di不存在冲突，否则两个向量时钟存在冲突。一般server无法处理冲突，需要将两个版本的数据同时返回client， 由client解决冲突（reconciliation）。<a id="more"></a></p>
 <h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p>N = 3</p>
 <ol>
-<li><p>client发送写请求，Sx  接收请求，并创建对象D1的向量时钟[(Sx, 1)]，由Sx节点将副本传播其他所有节点<br><img src="https://zjspja.ch.files.1drv.com/y4mJioea6g_kWn1WTVyfFDDmFe-Yz7B4rPL1aZpX6z5DkAraxJSZfX9VNUckvWZDUADALb8bDL9Vl_YPBTQ9VtaVGRLPlefymWXQXwG6Sd3g_VXrzxtcshybNG4APn7GJtkWdoGw1H3ZwsSm54Vb1lGmNLM0GLJ59SbL4nMBo58htoGoJ0i7M2NMkEMm2VMWJoOvreIBMQMGjjavl5Gvaep4w?width=660&height=359&cropmode=none" alt="vector_clock_1"></p>
+<li><p>client发送写请求，Sx  接收请求，并创建对象D1的向量时钟[(Sx, 1)]，由Sx节点将副本传播其他所有节点<br><img src="https://zjspja.ch.files.1drv.com/y4mJioea6g_kWn1WTVyfFDDmFe-Yz7B4rPL1aZpX6z5DkAraxJSZfX9VNUckvWZDUADALb8bDL9Vl_YPBTQ9VtaVGRLPlefymWXQXwG6Sd3g_VXrzxtcshybNG4APn7GJtkWdoGw1H3ZwsSm54Vb1lGmNLM0GLJ59SbL4nMBo58htoGoJ0i7M2NMkEMm2VMWJoOvreIBMQMGjjavl5Gvaep4w?width=660&amp;height=359&amp;cropmode=none" alt="vector_clock_1"></p>
 </li>
-<li><p>client更新对象至D2，还是由Sx处理请求。Sx更新向量时钟为[(Sx, 2)]，Sx将副本传播给其他节点，其他节点接收时，比对向量时钟发现D2是D1的后代，便直接更新对象为D2<br><img src="https://zjsqja.ch.files.1drv.com/y4mG5qcT9xwzMwHdHjOA_Rn_LGcvnGeen5Nq8Bva66fD1PDW7eRNwvh1MfH6PpU-mG8JghRA7ln5GoIwNG0Wothr-78jfzxyn_5s16cY67NW0J5alPHiAKk3EDrVKVmFW2tIx3ePXzzL0Wrr542jeNlltsiFdYvoR85c9kglLAQAEqde8WlWOcIXaWAlmyxb--qeX_FFDM_r4jVdqgbwZeGSw?width=660&height=332&cropmode=none" alt="vector_clock_2"></p>
+<li><p>client更新对象至D2，还是由Sx处理请求。Sx更新向量时钟为[(Sx, 2)]，Sx将副本传播给其他节点，其他节点接收时，比对向量时钟发现D2是D1的后代，便直接更新对象为D2<br><img src="https://zjsqja.ch.files.1drv.com/y4mG5qcT9xwzMwHdHjOA_Rn_LGcvnGeen5Nq8Bva66fD1PDW7eRNwvh1MfH6PpU-mG8JghRA7ln5GoIwNG0Wothr-78jfzxyn_5s16cY67NW0J5alPHiAKk3EDrVKVmFW2tIx3ePXzzL0Wrr542jeNlltsiFdYvoR85c9kglLAQAEqde8WlWOcIXaWAlmyxb--qeX_FFDM_r4jVdqgbwZeGSw?width=660&amp;height=332&amp;cropmode=none" alt="vector_clock_2"></p>
 </li>
-<li><p>client更新D2至D3，Sy处理请求。Sy更新向量时钟为[(Sx, 2),(Sy,1)]。同时，另个client更新D2至D4，Sz处理请求。Sz更新向量时钟为[(Sx, 2),(Sz,1)]，Sy和Sz都将副本传播给其他节点， 但在比对向量时钟是发现存在冲突，于是两个版本都应当被保留。<br><img src="https://zjs8ja.ch.files.1drv.com/y4mNAIb1qZwK7kcga_NPAHoriDhRUs7wNHEg06fVyljSjjuhby14fw_1HdVeF8bbzMtznusdxumXvBwwV-IK33_jAdZo70ELGw_dqW7aw3MrhKTFgv_RT9v-nS1OlqVqXhUmzvKci4Z-rVCNdnDzhm19i-_AD5v3HUA70H0ti3s1NTdMfzW543g2578meKkUQ1zS_6BtIL1uEUhYaoKMZ5z4A?width=660&height=305&cropmode=none" alt="vector_clock_3"></p>
+<li><p>client更新D2至D3，Sy处理请求。Sy更新向量时钟为[(Sx, 2),(Sy,1)]。同时，另个client更新D2至D4，Sz处理请求。Sz更新向量时钟为[(Sx, 2),(Sz,1)]，Sy和Sz都将副本传播给其他节点， 但在比对向量时钟是发现存在冲突，于是两个版本都应当被保留。<br><img src="https://zjs8ja.ch.files.1drv.com/y4mNAIb1qZwK7kcga_NPAHoriDhRUs7wNHEg06fVyljSjjuhby14fw_1HdVeF8bbzMtznusdxumXvBwwV-IK33_jAdZo70ELGw_dqW7aw3MrhKTFgv_RT9v-nS1OlqVqXhUmzvKci4Z-rVCNdnDzhm19i-_AD5v3HUA70H0ti3s1NTdMfzW543g2578meKkUQ1zS_6BtIL1uEUhYaoKMZ5z4A?width=660&amp;height=305&amp;cropmode=none" alt="vector_clock_3"></p>
 </li>
 </ol>
-<p><img src="https://zjs9ja.ch.files.1drv.com/y4mGS6ZusLnyc_CQKtSB2HVAI6DynA6hXXbvTeDJpHu8obIM2DkjomaAnF9-MSczsNQqjJWwunGJUeSicCPCUrH3PUFbvjcXxj8oGQAT0RhvoQvcgfv6RN8TGLckKF9UD8I8AsqSoYo8L684HDvrS8AtLGpTooHMi6cYv46H3CaxkRIygOjJrZtUDXCtawS1Tn9AV6p68TSENevVpvL3ARkEg?width=660&height=335&cropmode=none" alt="vector_clock_4"></p>
-<ol start="4">
+<p><img src="https://zjs9ja.ch.files.1drv.com/y4mGS6ZusLnyc_CQKtSB2HVAI6DynA6hXXbvTeDJpHu8obIM2DkjomaAnF9-MSczsNQqjJWwunGJUeSicCPCUrH3PUFbvjcXxj8oGQAT0RhvoQvcgfv6RN8TGLckKF9UD8I8AsqSoYo8L684HDvrS8AtLGpTooHMi6cYv46H3CaxkRIygOjJrZtUDXCtawS1Tn9AV6p68TSENevVpvL3ARkEg?width=660&amp;height=335&amp;cropmode=none" alt="vector_clock_4"></p>
+<ol>
 <li><p>如果这时client发起读请求，读操作返回的 context 综合了 D3 和 D4 的 clock，即 [(Sx, 2), (Sy, 1), (Sz, 1)]。如果客户端执行 reconciliation，并且节点 Sx 执行协调写（coordinates the write），Sx 会更新自己在 clock 中的序列号。最终新生成的数据 D5 的 clock 格式如下：[(Sx, 3), (Sy, 1), (Sz, 1)]。</p>
 </li>
-<li><p>如果client更新对象至D5， Sx处理请求， 会整合冲突矢量时钟为[(Sx, 2),(Sy,1),(Sz,1)],然后更新为[(Sx, 3),(Sy,1),(Sz,1)]<br><img src="https://zjs4ja.ch.files.1drv.com/y4m7OEL1neePMrARuBeV4Y544Z2i1F5qpp59GPV_2sQYARdigSC9nC-ZglvlIBZxB1aW7UuN79X6DdDJXMGvLkc2zWzl-2uP4UYLO8B9FLf7E0wZ7KkV-sCKaSJqxAUM1JRJkotNtqtqypTRAszEWVhEgd4vtvQV6WXcnONsIKcg8gSH_p_Bb0jwZqKrtEEogLvC9dmzdqZDo9Kr9DuJ7Ns-Q?width=660&height=303&cropmode=none" alt="vector_clock_5"></p>
+<li><p>如果client更新对象至D5， Sx处理请求， 会整合冲突矢量时钟为[(Sx, 2),(Sy,1),(Sz,1)],然后更新为[(Sx, 3),(Sy,1),(Sz,1)]<br><img src="https://zjs4ja.ch.files.1drv.com/y4m7OEL1neePMrARuBeV4Y544Z2i1F5qpp59GPV_2sQYARdigSC9nC-ZglvlIBZxB1aW7UuN79X6DdDJXMGvLkc2zWzl-2uP4UYLO8B9FLf7E0wZ7KkV-sCKaSJqxAUM1JRJkotNtqtqypTRAszEWVhEgd4vtvQV6WXcnONsIKcg8gSH_p_Bb0jwZqKrtEEogLvC9dmzdqZDo9Kr9DuJ7Ns-Q?width=660&amp;height=303&amp;cropmode=none" alt="vector_clock_5"></p>
 </li>
 </ol>
 <h2 id="向量时钟的潜在问题"><a href="#向量时钟的潜在问题" class="headerlink" title="向量时钟的潜在问题"></a>向量时钟的潜在问题</h2><p>从上面看，但N不断变大， 向量时钟的长度也将不断变大。在Dynamo中， 处理读或写请求的节点通常情况下是preference list 内前 N 个节点中的第一个节点（负载均衡下可能不是第一个节点， 请求会被转发到第一个节点）。<br>只有在网络分裂或多台服务器挂掉的情况下，写操作才可能由非 preference list 前 N 个 节点来执行，导致向量时钟变长。在这种情况下，应该要限制向量时钟的长度 。dynamo会保存向量时钟中每个（Node， Counter）对应的时间戳，当向量时钟长度大于某个阈值时，会抛弃时间最久的一项。这可能导致无法判断后代关系， 但还没有在aws的在生产环境遇到这个问题，论文中未写处理方式。</p>
@@ -555,7 +555,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -577,7 +577,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spanner,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍Spanner 是Google研发的可扩展的，全球分布式的，同步复制数据库。它支持外部一致性、非阻塞读、传统事务。">
+<meta name="keywords" content="Spanner">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spanner(2012)">
+<meta property="og:url" content="http://yoursite.com/2020/03/08/Google_Spanner/index.html">
+<meta property="og:site_name" content="YP&#39;s blog">
+<meta property="og:description" content="介绍Spanner 是Google研发的可扩展的，全球分布式的，同步复制数据库。它支持外部一致性、非阻塞读、传统事务。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yzs9ja.ch.files.1drv.com/y4mZoYoL-hN9Kizc4LJjPdwoRWIANgMTYPQBOIouBwbPS-Ekbn0suRHzebZ_7IomJehZIk5_UOLu6zq1VjDfn_Jr2_T0MLTN-DXOE7_X8kgUArVuyLChId4hb8dpHurMh-hioLJAbF6LcmmJm01PdlfAS8DBqQRDGxi3p90X5DNOCDy_d_zaoQ7q5QNtl2s6edCCgFnf-P_pGFADY7b_FuSTw?width=660&height=387&cropmode=none">
+<meta property="og:image" content="https://yzs6ja.ch.files.1drv.com/y4mpjpDRdPuDR7M2_ZuYp9SMbEJAMKh-W6x7b8-84BTMtpulgXZ9YhkS-3mh04P3SBkYURR2FQkRN7VwaU5DE0CGyMQGqSv9bulw4dCNbAj0CcsYaQ80I18u46b6-vSJl2fpzeZ-xJHdOqf267j6f6RV6Oqg-t3kb312cKbgbQbsRtpXH4LzfzQ2pNQsSSe_1-bo-8PbdX-nw4GuFiAAeHSlg?width=660&height=496&cropmode=none">
+<meta property="og:image" content="https://1js5ja.ch.files.1drv.com/y4mll_pRKRD6UrfH6Ybz26eqU_8Q1-l05LKC0Yyk1FG9lNxbLmC7vw4FclMrZJvDu3FFeTKMM1soZF84g_Wg5GlMrX9KSMYYN_DaiDzJVKzCmiZf_GsTTYxsQ9CxxbpUlJkoa3yx17FFsFfYBsm2dAKb6KCxlQs2NOeBjG-hXbOcnPGPBm8zDztb87hHanIAgMWRaTcxt5aVp8DrEnNqsLqSg?width=256&height=120&cropmode=none">
+<meta property="og:image" content="https://zdspja.ch.files.1drv.com/y4m3FuPWujBfbm5tcGPwp8mm2Nkisn2lQrmw9YK3VZBAtXti39XQg6PhCFenp669eoDzgF8d6rO6f0Oj7xREZaVe1tjfdndxg88WU6uFfx2pGFiGx9UYyCLEeLymZRohQWsatBKaOwaeITkJ-R4DbeuLxCeWcs5N_7bNMap72M_AeF3DG0IejloxGN_llHJZHEeZ14QXWR9X_Burbwnu8Obfw?width=660&height=469&cropmode=none">
+<meta property="og:image" content="https://ztrcmq.ch.files.1drv.com/y4mU_Ih1A43rL1cK6EUCyCYRYzbLoa0VuyhAFLqW7iVg9MbXg0lisPW1TWvixCFwC-v0bcTEKa7j8sXDbtqr1d5OSSBm7iSQPBw9nw1uppq4wWjKT86jf7UK3DnG1YFGgcAIaZiFrubjj9J0I69mriuq9mtZlyw7NyEr8qQevuwOVzQW_0ubdgcpr8EyaUnFf_D8tbmg7OXwD0ui3n3txfKFA?width=660&height=298&cropmode=none">
+<meta property="og:image" content="https://ztrzmq.ch.files.1drv.com/y4mU673Zpj4p2e_uPThkL9L9Zx2DflzLu8_3hJ4W2nbccmwV4oqY-wFvw3RSgkyxyCRN7anORkjk8B2ZqCW-y6bqmUOK6nWlY012OwnftdRYQwcDaZyBIryx8dlKsdA1z88sJ2NDNn7OMHIkPHrgNFnmZMAAo4OGqjSy-hzq6kF6dIk7HoiMX3s2B_j-5NCk00jBZ-a9oatum5Dlmv_-gwAew?width=660&height=288&cropmode=none">
+<meta property="og:image" content="https://ztramq.ch.files.1drv.com/y4mFgPw9_eJYdBhbNuza8d-EUI4Ob8QQzKgVmKjnUmfKYtEjY4S0zKQiYsOBgQ0QAYUf57I_-Unkra7rRjMUHWS7qPtuzJ4lL99HF95tOh-521I8ZJItn9gyZgeTNkQBxR8klvD2yTv5JTG_uAT6VngbOotN0Vnn2NcEFiroFkd6VMyxYdWdKJluqBdTJaiHti8b5pSHjH98s5uAuSa04wXKw?width=588&height=278&cropmode=none">
+<meta property="og:updated_time" content="2020-03-15T09:37:44.854Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spanner(2012)">
+<meta name="twitter:description" content="介绍Spanner 是Google研发的可扩展的，全球分布式的，同步复制数据库。它支持外部一致性、非阻塞读、传统事务。">
+<meta name="twitter:image" content="https://yzs9ja.ch.files.1drv.com/y4mZoYoL-hN9Kizc4LJjPdwoRWIANgMTYPQBOIouBwbPS-Ekbn0suRHzebZ_7IomJehZIk5_UOLu6zq1VjDfn_Jr2_T0MLTN-DXOE7_X8kgUArVuyLChId4hb8dpHurMh-hioLJAbF6LcmmJm01PdlfAS8DBqQRDGxi3p90X5DNOCDy_d_zaoQ7q5QNtl2s6edCCgFnf-P_pGFADY7b_FuSTw?width=660&height=387&cropmode=none">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/08/Google_Spanner/">
+
+
+
+
+
+  <title>Spanner(2012) | YP's blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?de96a846947a761a1dc36ab70eeb06d7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YP's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input">
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'iaeCy3bC1pmHqX-Ju3UQ','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/08/Google_Spanner/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yeahpeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YP's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spanner(2012)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-08T22:39:42+08:00">
+                2020-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/03/08/Google_Spanner/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2020/03/08/Google_Spanner/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Spanner 是Google研发的可扩展的，全球分布式的，同步复制数据库。它支持外部一致性、非阻塞读、传统事务。<a id="more"></a></p>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><p><img src="https://yzs9ja.ch.files.1drv.com/y4mZoYoL-hN9Kizc4LJjPdwoRWIANgMTYPQBOIouBwbPS-Ekbn0suRHzebZ_7IomJehZIk5_UOLu6zq1VjDfn_Jr2_T0MLTN-DXOE7_X8kgUArVuyLChId4hb8dpHurMh-hioLJAbF6LcmmJm01PdlfAS8DBqQRDGxi3p90X5DNOCDy_d_zaoQ7q5QNtl2s6edCCgFnf-P_pGFADY7b_FuSTw?width=660&height=387&cropmode=none" alt="spanner_server_organ"></p>
+<ul>
+<li>Zone:管理部署的基本单元，也是物理隔离的单元，在一个数据中心中，可能有一个或者多个zone</li>
+<li>Zonemaster：把数据分配给spanserver</li>
+<li>spanserver：把数据提供给客户端</li>
+<li>location  proxy：帮助clien定位数据在那个spanserver</li>
+<li>Universe master：展示zone的各种状态的控制台</li>
+<li>Placement driver：周期性地与spanserver进行交互，来发现那些需要被转移的数据，或者是为了满足新的副本约束条件，或者是为了进行负载均衡。</li>
+</ul>
+<h3 id="tablet"><a href="#tablet" class="headerlink" title="tablet"></a>tablet</h3><p><img src="https://yzs6ja.ch.files.1drv.com/y4mpjpDRdPuDR7M2_ZuYp9SMbEJAMKh-W6x7b8-84BTMtpulgXZ9YhkS-3mh04P3SBkYURR2FQkRN7VwaU5DE0CGyMQGqSv9bulw4dCNbAj0CcsYaQ80I18u46b6-vSJl2fpzeZ-xJHdOqf267j6f6RV6Oqg-t3kb312cKbgbQbsRtpXH4LzfzQ2pNQsSSe_1-bo-8PbdX-nw4GuFiAAeHSlg?width=660&height=496&cropmode=none" alt="spanner_software_stack"></p>
+<p>tablet类似hbase的region， 实现<code>(key:string, timestamp:int64)-&gt;string</code>的映射，tablet的状态以b-树和wal形式存储在Colossus中。每个spanserver管理100～1000个tablet。每个spanserver会实现一个锁表用来维护两阶段锁状态和row key锁状态。<br>每个tablet上都实现了paxos状态机。图中是位于不同spanserver上的三个tablet，他们共同组成paxos group。如果一个事务只涉及一个paxos group，锁表和paxos leader（主副本）就能保证事物性。如果一个事务涉及到多行位于多个paxos group， 需要paxos leader共同协作完成。其中涉及到以下几个概念， 具体如何实现在读写事物中会详细描述。</p>
+<ul>
+<li>participant group：参与事务的Paxos group</li>
+<li>participant leader：participant group的主副本</li>
+<li>participant slaves：participant group的主副本外的其他副本</li>
+<li>coordinator leader ： 其中一个participant group的leader</li>
+</ul>
+<h2 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h2><p><img src="https://1js5ja.ch.files.1drv.com/y4mll_pRKRD6UrfH6Ybz26eqU_8Q1-l05LKC0Yyk1FG9lNxbLmC7vw4FclMrZJvDu3FFeTKMM1soZF84g_Wg5GlMrX9KSMYYN_DaiDzJVKzCmiZf_GsTTYxsQ9CxxbpUlJkoa3yx17FFsFfYBsm2dAKb6KCxlQs2NOeBjG-hXbOcnPGPBm8zDztb87hHanIAgMWRaTcxt5aVp8DrEnNqsLqSg?width=256&height=120&cropmode=none" alt="spanner_dir"></p>
+<p>目录是包含公共前缀的连续键的集合,属于一个目录的所有数据, 都具有相同配置, 一个Paxos组可以包含多个目录. 一个Spanner tablet内的分区不一定连续, 这有助于将多个可能需要一起访问的目录整合在一起.</p>
+<p>简单说, spanner是基于模式化的半关系表的数据模型.它有着类似传统数据库的DDL(模式化),  但数据模型不是纯粹的关系型. Spanner要求每个表必须有主键,多个表之间可以用 INTERLEAVE IN 关键词关联起来形成层次结构.</p>
+<p><img src="https://zdspja.ch.files.1drv.com/y4m3FuPWujBfbm5tcGPwp8mm2Nkisn2lQrmw9YK3VZBAtXti39XQg6PhCFenp669eoDzgF8d6rO6f0Oj7xREZaVe1tjfdndxg88WU6uFfx2pGFiGx9UYyCLEeLymZRohQWsatBKaOwaeITkJ-R4DbeuLxCeWcs5N_7bNMap72M_AeF3DG0IejloxGN_llHJZHEeZ14QXWR9X_Burbwnu8Obfw?width=660&height=469&cropmode=none" alt="model"></p>
+<p>在上图中, User表拥有主键uid,  Albums 值Users表子孙表, (uid, aid)是它的主键.在层次结构中, 父表也时目录表, 父表的行k, 和子孙表所有以K开头行共同组成一个<em>目录</em>, 如 Users(1), Albums(1, 1), Albums(1,2)这三行共同组成一个目录. 传统数据库中, 用外键来关联实现这一功能, 但不会约束两个表的数据的存储地址,   而spanner对表分组, 将相关联的数据凡在同一个目录中, 从而更加放方便存储, 复制, 加锁和被spanserver管理.</p>
+<h2 id="TrueTime"><a href="#TrueTime" class="headerlink" title="TrueTime"></a>TrueTime</h2><table>
+<thead>
+<tr>
+<th align="center">Method</th>
+<th align="center">Return</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">TT.now()</td>
+<td align="center">TTinterval:[earliest, latest]</td>
+</tr>
+<tr>
+<td align="center">TT.after(t)</td>
+<td align="center">true if t has definitely passed</td>
+</tr>
+<tr>
+<td align="center">TT.before(t)</td>
+<td align="center">true if t has definitely not arrived</td>
+</tr>
+</tbody></table>
+<p>TrueTime是高度可用的分布式时钟，它能帮助分布式系统生成单调递增的时间见戳：假设分布式系统中， 某一个节点生成时间戳T，T一定大于之前任意节点生成的时间戳T’。TrueTime基于GPS和原子钟，属于硬件方案。它的时钟节点间每30s同步一次，由于存在时钟漂移， 漂移率200us/s， 且时钟节点间通信时有1ms延迟。这些不确定因素使TureTime暴露的api是获取一个当前时间所在的范围【earliest， latest】， 一般情况下laest-earliest 会在1~7ms之间变化。TrueTime主要提供以下三个api， 其中TT.after(t)和TT.before(t)是对TT.now()包装。</p>
+<h2 id="事物"><a href="#事物" class="headerlink" title="事物"></a>事物</h2><p>Spanner支持三种事务：读写事务， 只读事务和快照读，其中只有读写事务需要悲观锁， 其他都不需要锁。</p>
+<h3 id="外部一致性实现"><a href="#外部一致性实现" class="headerlink" title="外部一致性实现"></a>外部一致性实现</h3><p>事务读和写采用两段锁协议（参考读写事务例子）。 当所有的锁都已经获得以后，在任何锁被释放之前，就可以给事务分配时间戳。对于分配的时间戳需要满足一下条件。<br>定义开始和提交时事件$ e_{i}^{start} $和$ e_{i}^{commit} $,事物提交时间为$e_{i}$,需要满足：<br>$t_{abs}(e_{1}^{start}) &lt; t_{abs}(e_{2}^{commit}) =&gt; s_{1} &lt; s_{s}$<br>Spanner 通过以下两个协议实现上述推论：</p>
+<ul>
+<li><em>Start.</em>  coordinator leader在 e_{i}^{server}事件后为事务$ T_{i} $ 分配的时间戳$ s_{i} $, s_{i}需要不小于TT.now().latest,. ($  e_{i}^{server} $ 指coordinator leader 发出提交请求事件)</li>
+<li><em>Commit Wait.</em>  cordinator leader必须确保客户端不能看到任何被$ T_{i} $提交的数据知道TT.after($ s_i $)为真。具体如下图, 也就是说一个事务处理非常快，但需要等到一段时间(Commit Wait)才能返回客户端。但往往Commit Wait不是事务瓶颈。</li>
+</ul>
+<p><img src="https://ztrcmq.ch.files.1drv.com/y4mU_Ih1A43rL1cK6EUCyCYRYzbLoa0VuyhAFLqW7iVg9MbXg0lisPW1TWvixCFwC-v0bcTEKa7j8sXDbtqr1d5OSSBm7iSQPBw9nw1uppq4wWjKT86jf7UK3DnG1YFGgcAIaZiFrubjj9J0I69mriuq9mtZlyw7NyEr8qQevuwOVzQW_0ubdgcpr8EyaUnFf_D8tbmg7OXwD0ui3n3txfKFA?width=660&height=298&cropmode=none" alt="commit_wait"></p>
+<p>证明：</p>
+<p><img src="https://ztrzmq.ch.files.1drv.com/y4mU673Zpj4p2e_uPThkL9L9Zx2DflzLu8_3hJ4W2nbccmwV4oqY-wFvw3RSgkyxyCRN7anORkjk8B2ZqCW-y6bqmUOK6nWlY012OwnftdRYQwcDaZyBIryx8dlKsdA1z88sJ2NDNn7OMHIkPHrgNFnmZMAAo4OGqjSy-hzq6kF6dIk7HoiMX3s2B_j-5NCk00jBZ-a9oatum5Dlmv_-gwAew?width=660&height=288&cropmode=none" alt="consist"></p>
+<h3 id="快照读"><a href="#快照读" class="headerlink" title="快照读"></a>快照读</h3><p>快照读指客户端提供时间戳或者时间边界，来读取某一时间版本或者大于某一时间戳的数据。spanner可以根据数据的时间戳判断某一副本是否足够新， 即是否满足读取要求， 但副本的数据可能还未提交， 需要有个安全时间$ t_{safe}$来判断副本上那些时间点以前的数据可读。 $ t_{safe}$ 需要满足以下两个条件</p>
+<ol>
+<li>小于paxos 最新应用的写请求的时间戳</li>
+<li>每个 participant leader 会为事务$ T_{i} $在准备提交的记录分配一个准备时间戳$ s_{i, g}^{parepare} $,同时 coordinator leader会确保$ s_{i} &gt;=  s_{i, g}^{parepare} $.因此还要小于$min(s_{i,g}^{prepare})$.</li>
+</ol>
+<h3 id="只读事务"><a href="#只读事务" class="headerlink" title="只读事务"></a>只读事务</h3><p>只读事务时， 先确认一个时间戳$s_{read}$，然后当时$s_{read}$的快照读.对于$s_{read}$的选择。<br>事务只涉及单个Paxos group<br>    $s_{read}$ 等于paxos group最新应用的写时间戳。<br>涉及多个Paxos group，有两种方案<br>    1. $s_{read} = TT.now().lastest$, 并且等待直到$ TT.after(s_{read}) == true $<br>    2. 和参与的Paxos group协商， 获取所有paxos group最新应用的写时间戳的最小值</p>
+<h3 id="读写事务"><a href="#读写事务" class="headerlink" title="读写事务"></a>读写事务</h3><table>
+<thead>
+<tr>
+<th align="left">分片</th>
+<th align="left">键范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0</td>
+<td align="left">[,3）</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">[3,224)</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">[224, 712)</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">[712, 717)</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">[717, 1265)</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">[1265, 1724)</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">[1724, 1997]</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left">[1997, 2456)</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left">[2456, w)</td>
+</tr>
+</tbody></table>
+<p>这是一张ExampleTable, 主键空间被分为9个分片, 分片可能被如下图分配在不同机器上.</p>
+<p><img src="https://ztramq.ch.files.1drv.com/y4mFgPw9_eJYdBhbNuza8d-EUI4Ob8QQzKgVmKjnUmfKYtEjY4S0zKQiYsOBgQ0QAYUf57I_-Unkra7rRjMUHWS7qPtuzJ4lL99HF95tOh-521I8ZJItn9gyZgeTNkQBxR8klvD2yTv5JTG_uAT6VngbOotN0Vnn2NcEFiroFkd6VMyxYdWdKJluqBdTJaiHti8b5pSHjH98s5uAuSa04wXKw?width=588&height=278&cropmode=none" alt="write_read"></p>
+<p>假设客户端希望通过一个事务读取行 1000 的值并为行 2000、3000 和 4000 写入值。从表可以看出 1000属于分片4, 2000属于分片7, 3000和4000属于分片8.<br>事务过程如下:</p>
+<ol>
+<li>分片 4 的主要副本尝试获取行 Id=1000 的读锁。然后通过主副本得到值“1000”返回客户端</li>
+<li>客户端为事务 t 发出提交请求。</li>
+<li>一个参与者成为协调者（假设是分片7）</li>
+<li>参与者获取锁。（这是两段式提交的第一阶段。）<br> a. 分片4已经持有读锁<br> b. 分片7,8获取写锁<br> c. 通过伤停-等待防止死锁</li>
+<li>所有参与者和协调者成功获取锁，协调者（分片 7）会决定提交事务。它将基于 TrueTime 为事务分配时间戳。</li>
+<li>协调者将事务结果传达给所有参与者。（这是两段式提交的第二阶段。）</li>
+<li>事务被提交后，协调者和所有参与者会将变更应用于数据。</li>
+<li>协调者主要副本响应客户端并告知其事务已提交.</li>
+</ol>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><ol>
+<li>两个读写事务T1和T2， T1会读T2修改的字段， 会不会出现s1 &gt; s2，而s1看不到s2修改的数据？<br>不会，两阶段锁保证如果两个事务涉及同一行的读写冲突，T1和T2一定串行执行，分配时间戳在获取锁后，如果s1 &gt; s2, 则T1会等到T2释放锁后执行。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spanner/" rel="tag"># Spanner</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/24/一条tcpdump-语句解析/" rel="next" title="一条tcpdump 语句解析">
+                <i class="fa fa-chevron-left"></i> 一条tcpdump 语句解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2020/03/08/Google_Spanner/" data-title="Spanner(2012)" data-url="http://yoursite.com/2020/03/08/Google_Spanner/">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="yeahpeng">
+            
+              <p class="site-author-name" itemprop="name">yeahpeng</p>
+              <p class="site-description motion-element" itemprop="description">one blog a day, keep the doctor away</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yeahpeng" target="_blank" title="github">
+                      
+                        <i class="fa fa-fw fa-globe"></i>github</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构"><span class="nav-number">2.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tablet"><span class="nav-number">2.1.</span> <span class="nav-text">tablet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据模型"><span class="nav-number">3.</span> <span class="nav-text">数据模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TrueTime"><span class="nav-number">4.</span> <span class="nav-text">TrueTime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事物"><span class="nav-number">5.</span> <span class="nav-text">事物</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#外部一致性实现"><span class="nav-number">5.1.</span> <span class="nav-text">外部一致性实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快照读"><span class="nav-number">5.2.</span> <span class="nav-text">快照读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只读事务"><span class="nav-number">5.3.</span> <span class="nav-text">只读事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写事务"><span class="nav-number">5.4.</span> <span class="nav-text">读写事务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考"><span class="nav-number">6.</span> <span class="nav-text">思考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yeahpeng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yeahpeng"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
