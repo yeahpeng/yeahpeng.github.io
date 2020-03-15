@@ -383,16 +383,18 @@
       
 
       
-        <h2 id="LSM-Tree-Log-Structed-Merge-Tree"><a href="#LSM-Tree-Log-Structed-Merge-Tree" class="headerlink" title="LSM-Tree(Log Structed Merge Tree )"></a>LSM-Tree(Log Structed Merge Tree )</h2><p><img src="https://yzskgg.ch.files.1drv.com/y4mBkp815cGhSWnJpsvTzZnlJW3oDpNvT9rBuAvtbpCTiOJ7eXMJqiZM3EFsPSCinZwCjpwVIUnXW-j0IUd4ZXHVkS0BTu-kQxgpL8deXrEw1UjGLilVPl-epmiW52vr6lyoUR70Re244dwTzQmOweOwbZB8swNbhhV_kVPeD8qw1nnYCSDtRhXFkohr2gx3tYbijS5bz3XWmX3mRVR2aQFgA?width=732&amp;height=510&amp;cropmode=none" alt="lsm-tree"></p>
-<p>由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。<br><a id="more"></a></p>
+        <h2 id="LSM-Tree-Log-Structed-Merge-Tree"><a href="#LSM-Tree-Log-Structed-Merge-Tree" class="headerlink" title="LSM-Tree(Log Structed Merge Tree )"></a>LSM-Tree(Log Structed Merge Tree )</h2><p><img src="https://yzskgg.ch.files.1drv.com/y4mBkp815cGhSWnJpsvTzZnlJW3oDpNvT9rBuAvtbpCTiOJ7eXMJqiZM3EFsPSCinZwCjpwVIUnXW-j0IUd4ZXHVkS0BTu-kQxgpL8deXrEw1UjGLilVPl-epmiW52vr6lyoUR70Re244dwTzQmOweOwbZB8swNbhhV_kVPeD8qw1nnYCSDtRhXFkohr2gx3tYbijS5bz3XWmX3mRVR2aQFgA?width=732&height=510&cropmode=none" alt="lsm-tree"></p>
+<p>由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。</p>
+<a id="more"></a>
+
 <p>图是hbase的lsm树架构。 它主要分为在内存中的memstore 和 在磁盘上的HFile， 对于新写入的数据， 会先写到memstore中，同时为了防止丢失写一条wal。当memstore达到一定阈值，会将当前的memstore置为只读，并生成新的memstore 用于新数据写入，同时异步将旧的memstore dump到磁盘（磁盘顺序写），生成HFile。</p>
 <h2 id="读和写"><a href="#读和写" class="headerlink" title="读和写"></a>读和写</h2><p>lsm-tree为了提升写效率到极致，只对磁盘文件append操作。对于数据的删除，会写一行标记delete的新数据， 同理，修改数据是直接写入新数据。<br>对于读请求，会先在memstore中查询， 然后在HFile中找到最新数据。</p>
-<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><h3 id="布隆优化器"><a href="#布隆优化器" class="headerlink" title="布隆优化器"></a>布隆优化器</h3><p><img src="https://zdsrgg.ch.files.1drv.com/y4mw_KW3tCjO9CbK9E7BRHFBAoBaP-oCD3134ZDgHVX0EuQzDp1196emjU3CmfROyxJlsh-9-vuAjQMTfSr1Ra4ka042nBEWqrI_I2GLgSnRByQVFyMV2GAudRFM6s5uE-DXHktrS6v17Ffg_9I6a-qw87FmNVdmS4IcvutL5JDxN3fJznrKih9zgNFuV2x_RpaVEmcL6sNGlp6S93kh8F_1g?width=834&amp;height=290&amp;cropmode=none" alt="Bloom Filter"></p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><h3 id="布隆优化器"><a href="#布隆优化器" class="headerlink" title="布隆优化器"></a>布隆优化器</h3><p><img src="https://zdsrgg.ch.files.1drv.com/y4mw_KW3tCjO9CbK9E7BRHFBAoBaP-oCD3134ZDgHVX0EuQzDp1196emjU3CmfROyxJlsh-9-vuAjQMTfSr1Ra4ka042nBEWqrI_I2GLgSnRByQVFyMV2GAudRFM6s5uE-DXHktrS6v17Ffg_9I6a-qw87FmNVdmS4IcvutL5JDxN3fJznrKih9zgNFuV2x_RpaVEmcL6sNGlp6S93kh8F_1g?width=834&height=290&cropmode=none" alt="Bloom Filter"></p>
 <p>布隆过滤器能高效的判断数据是否<strong>不存在</strong>某个集合中。加入集合时，会对key进行三次哈希，并将对应位置1。判断是否<strong>不存在</strong>时，只需对key重新哈希，查询是否三位都为1。需要注意的是，即使都是1也只是可能存在。</p>
 <p>布隆过滤器只支持添加，不支持删除。</p>
 <h3 id="大小分级（HBase）"><a href="#大小分级（HBase）" class="headerlink" title="大小分级（HBase）"></a>大小分级（HBase）</h3><p>Minor Compaction: 选取部分小的、相邻的HFile，将它们合并成一个更大的HFile。</p>
 <p>Major Compaction: 将一个Store中所有的HFile合并成一个HFile，这个过程还会完全清理三类无意义数据：被删除的数据、TTL过期数据、版本号超过设定版本号的数据</p>
-<h3 id="分层压缩（LevelDB和RocksDB）"><a href="#分层压缩（LevelDB和RocksDB）" class="headerlink" title="分层压缩（LevelDB和RocksDB）"></a>分层压缩（LevelDB和RocksDB）</h3><p><img src="https://ytsngg.ch.files.1drv.com/y4mgRrQWLgjdZSmDcD1aXJQAOsZLktfylJCl4GSzFnvAS_vQfYoZ1ykypQ0TqONT3bIeFntSzbjSXehP0t0dSxIFKXL9cUblr7uCrzEZ-7H8T21C5STHk6n1jJ_YfQqaUWaYFzYJUw4_ucO-SWCnu5TFuMUd5UbGJs4r-tkzQNBIEtXOgk_sVC1MqZtR_0VvDOAfCa16RNu6uJ88nVm0AVNSg?width=889&amp;height=319&amp;cropmode=none" alt="Level"></p>
+<h3 id="分层压缩（LevelDB和RocksDB）"><a href="#分层压缩（LevelDB和RocksDB）" class="headerlink" title="分层压缩（LevelDB和RocksDB）"></a>分层压缩（LevelDB和RocksDB）</h3><p><img src="https://ytsngg.ch.files.1drv.com/y4mgRrQWLgjdZSmDcD1aXJQAOsZLktfylJCl4GSzFnvAS_vQfYoZ1ykypQ0TqONT3bIeFntSzbjSXehP0t0dSxIFKXL9cUblr7uCrzEZ-7H8T21C5STHk6n1jJ_YfQqaUWaYFzYJUw4_ucO-SWCnu5TFuMUd5UbGJs4r-tkzQNBIEtXOgk_sVC1MqZtR_0VvDOAfCa16RNu6uJ88nVm0AVNSg?width=889&height=319&cropmode=none" alt="Level"></p>
 <p>Leve0: 由ImmutableMem Table dump到磁盘, 不同SSTable的key的范围可能重叠，即相同的key可能分散在多个SSTable中。</p>
 <p>Level n(n &gt; 0): 由Level n-1 和 Level n compact生成。每个SSTable的存储一定范围的key， 不存在重叠。</p>
 <p>当读数据时，先在内存中查询，然后从0层开始一层层查询，第0层需要查询多个文件判断key是否存在该层，查询其他层时，只需要查找特定文件。</p>

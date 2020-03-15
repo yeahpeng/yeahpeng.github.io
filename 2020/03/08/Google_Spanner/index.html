@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://ztrcmq.ch.files.1drv.com/y4mU_Ih1A43rL1cK6EUCyCYRYzbLoa0VuyhAFLqW7iVg9MbXg0lisPW1TWvixCFwC-v0bcTEKa7j8sXDbtqr1d5OSSBm7iSQPBw9nw1uppq4wWjKT86jf7UK3DnG1YFGgcAIaZiFrubjj9J0I69mriuq9mtZlyw7NyEr8qQevuwOVzQW_0ubdgcpr8EyaUnFf_D8tbmg7OXwD0ui3n3txfKFA?width=660&height=298&cropmode=none">
 <meta property="og:image" content="https://ztrzmq.ch.files.1drv.com/y4mU673Zpj4p2e_uPThkL9L9Zx2DflzLu8_3hJ4W2nbccmwV4oqY-wFvw3RSgkyxyCRN7anORkjk8B2ZqCW-y6bqmUOK6nWlY012OwnftdRYQwcDaZyBIryx8dlKsdA1z88sJ2NDNn7OMHIkPHrgNFnmZMAAo4OGqjSy-hzq6kF6dIk7HoiMX3s2B_j-5NCk00jBZ-a9oatum5Dlmv_-gwAew?width=660&height=288&cropmode=none">
 <meta property="og:image" content="https://ztramq.ch.files.1drv.com/y4mFgPw9_eJYdBhbNuza8d-EUI4Ob8QQzKgVmKjnUmfKYtEjY4S0zKQiYsOBgQ0QAYUf57I_-Unkra7rRjMUHWS7qPtuzJ4lL99HF95tOh-521I8ZJItn9gyZgeTNkQBxR8klvD2yTv5JTG_uAT6VngbOotN0Vnn2NcEFiroFkd6VMyxYdWdKJluqBdTJaiHti8b5pSHjH98s5uAuSa04wXKw?width=588&height=278&cropmode=none">
-<meta property="og:updated_time" content="2020-03-15T09:37:44.854Z">
+<meta property="og:updated_time" content="2020-03-15T10:02:18.807Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spanner(2012)">
 <meta name="twitter:description" content="介绍Spanner 是Google研发的可扩展的，全球分布式的，同步复制数据库。它支持外部一致性、非阻塞读、传统事务。">
@@ -517,14 +517,12 @@
 <p><img src="https://ztramq.ch.files.1drv.com/y4mFgPw9_eJYdBhbNuza8d-EUI4Ob8QQzKgVmKjnUmfKYtEjY4S0zKQiYsOBgQ0QAYUf57I_-Unkra7rRjMUHWS7qPtuzJ4lL99HF95tOh-521I8ZJItn9gyZgeTNkQBxR8klvD2yTv5JTG_uAT6VngbOotN0Vnn2NcEFiroFkd6VMyxYdWdKJluqBdTJaiHti8b5pSHjH98s5uAuSa04wXKw?width=588&height=278&cropmode=none" alt="write_read"></p>
 <p>假设客户端希望通过一个事务读取行 1000 的值并为行 2000、3000 和 4000 写入值。从表可以看出 1000属于分片4, 2000属于分片7, 3000和4000属于分片8.<br>事务过程如下:</p>
 <ol>
-<li>分片 4 的主要副本尝试获取行 Id=1000 的读锁。然后通过主副本得到值“1000”返回客户端</li>
+<li>分片 4 的主要副本尝试获取行 Id=1000 的读锁。然后通过主副本得到值“1000”返回客户端。写请求会暂时缓存在客户端</li>
 <li>客户端为事务 t 发出提交请求。</li>
 <li>一个参与者成为协调者（假设是分片7）</li>
-<li>参与者获取锁。（这是两段式提交的第一阶段。）<br> a. 分片4已经持有读锁<br> b. 分片7,8获取写锁<br> c. 通过伤停-等待防止死锁</li>
-<li>所有参与者和协调者成功获取锁，协调者（分片 7）会决定提交事务。它将基于 TrueTime 为事务分配时间戳。</li>
-<li>协调者将事务结果传达给所有参与者。（这是两段式提交的第二阶段。）</li>
-<li>事务被提交后，协调者和所有参与者会将变更应用于数据。</li>
-<li>协调者主要副本响应客户端并告知其事务已提交.</li>
+<li>每个参与者的leader获取锁，并生成一个$ s_{i, g}^{prepare}$，然后通过Paxos把准备提交记录写入日志。最后将（$ s_{i, g}^{prepare}$反馈给协调者。（这是两段式提交的第一阶段。）<br> a. 分片4已经持有读锁, 分片7,8获取写锁<br> b. 通过伤停-等待防止死锁<br> c. 为保证时间戳单调性，$ s_{i, g} ^ {prepare} &gt; s_{i-1}$。</li>
+<li>所有参与者和协调者成功获取锁，协调者（分片 7）会决定提交事务。它将基于 TrueTime 为事务分配时间戳。<br> a. $s_{i} &gt;= max(s_{i,g}^{prepare}) &amp;&amp; s_{i} &gt; TT.now().lastest &amp;&amp; s_{i} &gt; s_{i-1}$</li>
+<li>协调者将事务结果传达给所有参与者和客户端。（这是两段式提交的第二阶段。）<br> a. 如果步骤5成功，发送$ s_{i}$给每个参与者和客户端， 每个参与者的leader会通过paxos把事物结果写入日志。然后按照$ s_{i} $作为时间戳提交，然后释放锁。<br> b. 如果步骤5失败，通知参与者和客户端失败。</li>
 </ol>
 <h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><ol>
 <li>两个读写事务T1和T2， T1会读T2修改的字段， 会不会出现s1 &gt; s2，而s1看不到s2修改的数据？<br>不会，两阶段锁保证如果两个事务涉及同一行的读写冲突，T1和T2一定串行执行，分配时间戳在获取锁后，如果s1 &gt; s2, 则T1会等到T2释放锁后执行。</li>
