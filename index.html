@@ -321,7 +321,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/03/28/Multi Paxos/" itemprop="url">Multi-Paxos</a></h1>
+                <a class="post-title-link" href="/2020/03/28/Multi Paxos/" itemprop="url">Multi Paxos</a></h1>
         
 
         <div class="post-meta">
@@ -405,8 +405,8 @@
       
         
           
-          Multi-Paxos基于Basic-Paxos,大多数情况下只需要P2, 大大提升了性能, 同时还可以地将log有序的应用到状态机(非日志提交).
-Leader 与 Leader选举在多个proposer同时提交提案时，basic paxos很容易冲突，甚至产生活锁。如果能确定一个leader，并且在任期内都是由它来接收client请求，然后向acceptor提出提案，并且acceptor只接受
+          Multi Paxos基于Basic Paxos,大多数情况下只需要Phase 2, 大大提升了性能, 同时还可以将log有序的应用到状态机(非日志提交). lamport 在论文中并没有详细描述Multi Paxos的实现. 论文参照John Ousterhout 的视频和lamport的论文描述一种Multi  Paxos实现方式。
+Leader 与 Leader选举在多个proposer同时
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1188,8 +1188,8 @@ Leader 与 Leader选举在多个proposer同时提交提案时，basic paxos很�
 
       
         
-          <h2 id="LSM-Tree-Log-Structed-Merge-Tree"><a href="#LSM-Tree-Log-Structed-Merge-Tree" class="headerlink" title="LSM-Tree(Log Structed Merge Tree )"></a>LSM-Tree(Log Structed Merge Tree )</h2><p><img src="https://yzskgg.ch.files.1drv.com/y4mBkp815cGhSWnJpsvTzZnlJW3oDpNvT9rBuAvtbpCTiOJ7eXMJqiZM3EFsPSCinZwCjpwVIUnXW-j0IUd4ZXHVkS0BTu-kQxgpL8deXrEw1UjGLilVPl-epmiW52vr6lyoUR70Re244dwTzQmOweOwbZB8swNbhhV_kVPeD8qw1nnYCSDtRhXFkohr2gx3tYbijS5bz3XWmX3mRVR2aQFgA?width=732&height=510&cropmode=none" alt="lsm-tree"></p>
-<p>由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。</p>
+          <h2 id="LSM-Tree-Log-Structed-Merge-Tree"><a href="#LSM-Tree-Log-Structed-Merge-Tree" class="headerlink" title="LSM-Tree(Log Structed Merge Tree )"></a>LSM-Tree(Log Structed Merge Tree )</h2><p><img src="https://yzskgg.ch.files.1drv.com/y4mBkp815cGhSWnJpsvTzZnlJW3oDpNvT9rBuAvtbpCTiOJ7eXMJqiZM3EFsPSCinZwCjpwVIUnXW-j0IUd4ZXHVkS0BTu-kQxgpL8deXrEw1UjGLilVPl-epmiW52vr6lyoUR70Re244dwTzQmOweOwbZB8swNbhhV_kVPeD8qw1nnYCSDtRhXFkohr2gx3tYbijS5bz3XWmX3mRVR2aQFgA?width=732&amp;height=510&amp;cropmode=none" alt="lsm-tree"></p>
+<p>由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/12/29/lsm-tree/#more" rel="contents">
@@ -1199,7 +1199,7 @@ Leader 与 Leader选举在多个proposer同时提交提案时，basic paxos很�
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
     
     
     
@@ -1345,7 +1345,7 @@ Leader 与 Leader选举在多个proposer同时提交提案时，basic paxos很�
 
       
         
-          <h2 id="Kerberos"><a href="#Kerberos" class="headerlink" title="Kerberos"></a>Kerberos</h2><p><img src="https://yzsmgg.ch.files.1drv.com/y4mg7U9-IvMhJesVOvjQpzFXY886OfTfXMMEZFvugFlwAzTKE91-1fUFyilTNqMpJiFxfB3g4a317p_o6zBn3lLJzx72M3k5NReI0R09LijIvHpcZ2P6yx-UcZ6rbdAmJMAMgCbQttPsE3BHpyqG1lXLQmoWOWWRdclVYMTlVINnvni5sRabc1hXJQx5Uq2jFGhYonfuLx6HxMSP5VM14sIEg?width=612&height=545&cropmode=none" alt="Kerberos"></p>
+          <h2 id="Kerberos"><a href="#Kerberos" class="headerlink" title="Kerberos"></a>Kerberos</h2><p><img src="https://yzsmgg.ch.files.1drv.com/y4mg7U9-IvMhJesVOvjQpzFXY886OfTfXMMEZFvugFlwAzTKE91-1fUFyilTNqMpJiFxfB3g4a317p_o6zBn3lLJzx72M3k5NReI0R09LijIvHpcZ2P6yx-UcZ6rbdAmJMAMgCbQttPsE3BHpyqG1lXLQmoWOWWRdclVYMTlVINnvni5sRabc1hXJQx5Uq2jFGhYonfuLx6HxMSP5VM14sIEg?width=612&amp;height=545&amp;cropmode=none" alt="Kerberos"><br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/12/15/Kerberos/#more" rel="contents">
@@ -1355,7 +1355,7 @@ Leader 与 Leader选举在多个proposer同时提交提案时，basic paxos很�
           <!--/noindex-->
         
       
-    </div>
+    </p></div>
     
     
     

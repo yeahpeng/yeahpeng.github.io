@@ -87,12 +87,10 @@
 <meta property="og:site_name" content="YP&#39;s blog">
 <meta property="og:description" content="标准erlang实现的核心是ETRS（Erlang运行时系统），Erlang三个重要方面：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://7xl69p.com1.z0.glb.clouddn.com/erlang%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.png">
 <meta property="og:updated_time" content="2019-11-05T16:07:13.326Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Erlang学习笔记（二）">
 <meta name="twitter:description" content="标准erlang实现的核心是ETRS（Erlang运行时系统），Erlang三个重要方面：">
-<meta name="twitter:image" content="http://7xl69p.com1.z0.glb.clouddn.com/erlang%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.png">
 
 
 
@@ -412,7 +410,7 @@
 <li>GC</li>
 </ul>
 </blockquote>
-<h2 id="1-调度器"><a href="#1-调度器" class="headerlink" title="1.调度器"></a>1.调度器</h2><p>　　<code>ETRS</code>运行的时候通常就是单个操作系统进程，在这个进程中，跑着<code>Erlang</code>管理<code>Erlang</code>进程的调度器。在多核系统中，Erlang进程可以n：m的方式映射到操作系统线程，即在根据需要，在多个处理器上设置进程池。每个调度器处理一个进程池。<br>　　<center><img src="http://7xl69p.com1.z0.glb.clouddn.com/erlang%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.png" alt="Erlang"></center></p>
+<h2 id="1-调度器"><a href="#1-调度器" class="headerlink" title="1.调度器"></a>1.调度器</h2><p>　　<code>ETRS</code>运行的时候通常就是单个操作系统进程，在这个进程中，跑着<code>Erlang</code>管理<code>Erlang</code>进程的调度器。在多核系统中，Erlang进程可以n：m的方式映射到操作系统线程，即在根据需要，在多个处理器上设置进程池。每个调度器处理一个进程池。<br>　　<center>![Erlang](http://7xl69p.com1.z0.glb.clouddn.com/erlang%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89.png)</center></p>
 <h2 id="2-I-O与调度"><a href="#2-I-O与调度" class="headerlink" title="2.I/O与调度"></a>2.I/O与调度</h2><p>　　<code>ERTS</code>中，I/O系统被放在独立的进程中，以事件驱动的方式处理所有I/O当数据进出系统时，程序可以以非阻塞方式完成数据处理。这降低了连接建立和断开的频次，还避免了<code>OS</code>层面上的加锁开销 和上下文切换。</p>
 <h2 id="3-GC与进程隔离"><a href="#3-GC与进程隔离" class="headerlink" title="3.GC与进程隔离"></a>3.GC与进程隔离</h2><p>　　<code>Erlang</code>程序不像其他语言开发的系统那样在<code>GC</code>时遭受停顿。这主要是因为<code>Erlang</code>进程之间的隔离：每个进程所使用的内存都是自己的，随进程的创建和结束而分配和释放。首先，<code>GC</code>可以在不影响其他进程运行的前提下单独暂停目标进程。其次单个进程占用的内存通常比较小，遍历可以快速完成。再次，调度器知道每个进程最后一次运行的世界，如果某个进程自上次垃圾回收后什么也没干，调度器就会跳过他。</p>
 
