@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://ztrcmq.ch.files.1drv.com/y4mU_Ih1A43rL1cK6EUCyCYRYzbLoa0VuyhAFLqW7iVg9MbXg0lisPW1TWvixCFwC-v0bcTEKa7j8sXDbtqr1d5OSSBm7iSQPBw9nw1uppq4wWjKT86jf7UK3DnG1YFGgcAIaZiFrubjj9J0I69mriuq9mtZlyw7NyEr8qQevuwOVzQW_0ubdgcpr8EyaUnFf_D8tbmg7OXwD0ui3n3txfKFA?width=660&height=298&cropmode=none">
 <meta property="og:image" content="https://ztrzmq.ch.files.1drv.com/y4mU673Zpj4p2e_uPThkL9L9Zx2DflzLu8_3hJ4W2nbccmwV4oqY-wFvw3RSgkyxyCRN7anORkjk8B2ZqCW-y6bqmUOK6nWlY012OwnftdRYQwcDaZyBIryx8dlKsdA1z88sJ2NDNn7OMHIkPHrgNFnmZMAAo4OGqjSy-hzq6kF6dIk7HoiMX3s2B_j-5NCk00jBZ-a9oatum5Dlmv_-gwAew?width=660&height=288&cropmode=none">
 <meta property="og:image" content="https://ztramq.ch.files.1drv.com/y4mFgPw9_eJYdBhbNuza8d-EUI4Ob8QQzKgVmKjnUmfKYtEjY4S0zKQiYsOBgQ0QAYUf57I_-Unkra7rRjMUHWS7qPtuzJ4lL99HF95tOh-521I8ZJItn9gyZgeTNkQBxR8klvD2yTv5JTG_uAT6VngbOotN0Vnn2NcEFiroFkd6VMyxYdWdKJluqBdTJaiHti8b5pSHjH98s5uAuSa04wXKw?width=588&height=278&cropmode=none">
-<meta property="og:updated_time" content="2020-03-15T10:02:18.807Z">
+<meta property="og:updated_time" content="2020-03-15T10:03:03.707Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spanner(2012)">
 <meta name="twitter:description" content="介绍Spanner 是Google研发的可扩展的，全球分布式的，同步复制数据库。它支持外部一致性、非阻塞读、传统事务。">
@@ -527,6 +527,11 @@
 <h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><ol>
 <li>两个读写事务T1和T2， T1会读T2修改的字段， 会不会出现s1 &gt; s2，而s1看不到s2修改的数据？<br>不会，两阶段锁保证如果两个事务涉及同一行的读写冲突，T1和T2一定串行执行，分配时间戳在获取锁后，如果s1 &gt; s2, 则T1会等到T2释放锁后执行。</li>
 </ol>
+<h2 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h2><ul>
+<li><a href="https://cloud.google.com/spanner/docs/schema-and-data-model" target="_blank" rel="noopener">https://cloud.google.com/spanner/docs/schema-and-data-model</a></li>
+<li><a href="https://cloud.google.com/spanner/docs/whitepapers/life-of-reads-and-writes" target="_blank" rel="noopener">https://cloud.google.com/spanner/docs/whitepapers/life-of-reads-and-writes</a></li>
+<li><a href="https://research.google/pubs/pub39966/" target="_blank" rel="noopener">https://research.google/pubs/pub39966/</a> </li>
+</ul>
 
       
     </div>
@@ -566,6 +571,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/28/Multi Paxos/" rel="prev" title="Multi-Paxos">
+                Multi-Paxos <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -650,7 +659,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -672,7 +681,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -715,7 +724,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构"><span class="nav-number">2.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tablet"><span class="nav-number">2.1.</span> <span class="nav-text">tablet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据模型"><span class="nav-number">3.</span> <span class="nav-text">数据模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TrueTime"><span class="nav-number">4.</span> <span class="nav-text">TrueTime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事物"><span class="nav-number">5.</span> <span class="nav-text">事物</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#外部一致性实现"><span class="nav-number">5.1.</span> <span class="nav-text">外部一致性实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快照读"><span class="nav-number">5.2.</span> <span class="nav-text">快照读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只读事务"><span class="nav-number">5.3.</span> <span class="nav-text">只读事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写事务"><span class="nav-number">5.4.</span> <span class="nav-text">读写事务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考"><span class="nav-number">6.</span> <span class="nav-text">思考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构"><span class="nav-number">2.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tablet"><span class="nav-number">2.1.</span> <span class="nav-text">tablet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据模型"><span class="nav-number">3.</span> <span class="nav-text">数据模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TrueTime"><span class="nav-number">4.</span> <span class="nav-text">TrueTime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事物"><span class="nav-number">5.</span> <span class="nav-text">事物</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#外部一致性实现"><span class="nav-number">5.1.</span> <span class="nav-text">外部一致性实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快照读"><span class="nav-number">5.2.</span> <span class="nav-text">快照读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只读事务"><span class="nav-number">5.3.</span> <span class="nav-text">只读事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写事务"><span class="nav-number">5.4.</span> <span class="nav-text">读写事务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考"><span class="nav-number">6.</span> <span class="nav-text">思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资料"><span class="nav-number">7.</span> <span class="nav-text">资料</span></a></li></ol></div>
             
 
           </div>

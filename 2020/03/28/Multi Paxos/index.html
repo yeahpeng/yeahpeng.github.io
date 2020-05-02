@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="lsm,">
+  <meta name="keywords" content="Paxos,共识算法,">
 
 
 
@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="LSM-Tree(Log Structed Merge Tree ) 由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。">
-<meta name="keywords" content="lsm">
+<meta name="description" content="Multi-Paxos基于Basic-Paxos,大多数情况下只需要P2, 大大提升了性能, 同时还可以地将log有序的应用到状态机(非日志提交). Leader 与 Leader选举在多个proposer同时提交提案时，basic paxos很容易冲突，甚至产生活锁。如果能确定一个leader，并且在任期内都是由它来接收client请求，然后向acceptor提出提案，并且acceptor只接受">
+<meta name="keywords" content="Paxos,共识算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lsm-tree">
-<meta property="og:url" content="http://yoursite.com/2019/12/29/lsm-tree/index.html">
+<meta property="og:title" content="Multi-Paxos">
+<meta property="og:url" content="http://yoursite.com/2020/03/28/Multi Paxos/index.html">
 <meta property="og:site_name" content="YP&#39;s blog">
-<meta property="og:description" content="LSM-Tree(Log Structed Merge Tree ) 由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。">
+<meta property="og:description" content="Multi-Paxos基于Basic-Paxos,大多数情况下只需要P2, 大大提升了性能, 同时还可以地将log有序的应用到状态机(非日志提交). Leader 与 Leader选举在多个proposer同时提交提案时，basic paxos很容易冲突，甚至产生活锁。如果能确定一个leader，并且在任期内都是由它来接收client请求，然后向acceptor提出提案，并且acceptor只接受">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://yzskgg.ch.files.1drv.com/y4mBkp815cGhSWnJpsvTzZnlJW3oDpNvT9rBuAvtbpCTiOJ7eXMJqiZM3EFsPSCinZwCjpwVIUnXW-j0IUd4ZXHVkS0BTu-kQxgpL8deXrEw1UjGLilVPl-epmiW52vr6lyoUR70Re244dwTzQmOweOwbZB8swNbhhV_kVPeD8qw1nnYCSDtRhXFkohr2gx3tYbijS5bz3XWmX3mRVR2aQFgA?width=732&height=510&cropmode=none">
-<meta property="og:image" content="https://zdsrgg.ch.files.1drv.com/y4mw_KW3tCjO9CbK9E7BRHFBAoBaP-oCD3134ZDgHVX0EuQzDp1196emjU3CmfROyxJlsh-9-vuAjQMTfSr1Ra4ka042nBEWqrI_I2GLgSnRByQVFyMV2GAudRFM6s5uE-DXHktrS6v17Ffg_9I6a-qw87FmNVdmS4IcvutL5JDxN3fJznrKih9zgNFuV2x_RpaVEmcL6sNGlp6S93kh8F_1g?width=834&height=290&cropmode=none">
-<meta property="og:image" content="https://ytsngg.ch.files.1drv.com/y4mgRrQWLgjdZSmDcD1aXJQAOsZLktfylJCl4GSzFnvAS_vQfYoZ1ykypQ0TqONT3bIeFntSzbjSXehP0t0dSxIFKXL9cUblr7uCrzEZ-7H8T21C5STHk6n1jJ_YfQqaUWaYFzYJUw4_ucO-SWCnu5TFuMUd5UbGJs4r-tkzQNBIEtXOgk_sVC1MqZtR_0VvDOAfCa16RNu6uJ88nVm0AVNSg?width=889&height=319&cropmode=none">
-<meta property="og:updated_time" content="2020-04-22T15:10:24.808Z">
+<meta property="og:image" content="https://zjrvmq.ch.files.1drv.com/y4mZ66HWqNxqcN9sw6I9GD4ggKAMFQvu_RwOrOfyvk1Lry0WdZKVvhU_NMV5Xub5CQkCLYJsc6h9-1ceE9jQnekjVdmxCeR8BeBzlaZcO2ivOzz2t1292TKnDAtWYT0AhzR3ac-YE-VYoAXQKM8vVi2W5BkYKt39V1O5ifmUghtRNRMEKCfDQ8fDRDhXM34M0ge6RMYffoWgx5S-fkFlrIrmg?width=660&height=89&cropmode=none">
+<meta property="og:image" content="https://zjrwmq.ch.files.1drv.com/y4mD4-w_IvRpINN-FW6X6ux7JYixRDaF1UFPYMSBKyoHNvzQznTITxNne-v7cVltFX3mAb43-WXW20yC_MP7gXknlu3V_BxymyWRZZY-yhdH18xIErH8SMCfblODHd-S5GxX0DbYLQPxr5eafIRYc8UFpWo-bBmRshdQpoD-VmHZgH5SYjfuAGq6JY_4m7JTc6zpBBOGgWAIG-zgkn-nAjgaw?width=660&height=161&cropmode=none">
+<meta property="og:image" content="https://yjrtmq.ch.files.1drv.com/y4mtlaXQ0aVOiYGPjsn7ci3F_-dzv94kRlX2MXpwQexRg5nbmuSu62HSIsh9cDpc6ircNPojUm1CNRdzqXiQSMaxuB2ubKeUqHUwqoLsraFRFvwCtqbi3LLInPSwheLnS8Rsm0FrEy-WU41xhLERhg1VtRwRPZqTvYGNMABm8Oqox7GeZT16cLmuKFVf035S_YedrQ14H-2fu0N8WCjK6t9gQ?width=557&height=203&cropmode=none">
+<meta property="og:updated_time" content="2020-05-02T08:57:58.449Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lsm-tree">
-<meta name="twitter:description" content="LSM-Tree(Log Structed Merge Tree ) 由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。">
-<meta name="twitter:image" content="https://yzskgg.ch.files.1drv.com/y4mBkp815cGhSWnJpsvTzZnlJW3oDpNvT9rBuAvtbpCTiOJ7eXMJqiZM3EFsPSCinZwCjpwVIUnXW-j0IUd4ZXHVkS0BTu-kQxgpL8deXrEw1UjGLilVPl-epmiW52vr6lyoUR70Re244dwTzQmOweOwbZB8swNbhhV_kVPeD8qw1nnYCSDtRhXFkohr2gx3tYbijS5bz3XWmX3mRVR2aQFgA?width=732&height=510&cropmode=none">
+<meta name="twitter:title" content="Multi-Paxos">
+<meta name="twitter:description" content="Multi-Paxos基于Basic-Paxos,大多数情况下只需要P2, 大大提升了性能, 同时还可以地将log有序的应用到状态机(非日志提交). Leader 与 Leader选举在多个proposer同时提交提案时，basic paxos很容易冲突，甚至产生活锁。如果能确定一个leader，并且在任期内都是由它来接收client请求，然后向acceptor提出提案，并且acceptor只接受">
+<meta name="twitter:image" content="https://zjrvmq.ch.files.1drv.com/y4mZ66HWqNxqcN9sw6I9GD4ggKAMFQvu_RwOrOfyvk1Lry0WdZKVvhU_NMV5Xub5CQkCLYJsc6h9-1ceE9jQnekjVdmxCeR8BeBzlaZcO2ivOzz2t1292TKnDAtWYT0AhzR3ac-YE-VYoAXQKM8vVi2W5BkYKt39V1O5ifmUghtRNRMEKCfDQ8fDRDhXM34M0ge6RMYffoWgx5S-fkFlrIrmg?width=660&height=89&cropmode=none">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/12/29/lsm-tree/">
+  <link rel="canonical" href="http://yoursite.com/2020/03/28/Multi Paxos/">
 
 
 
 
 
-  <title>lsm-tree | YP's blog</title>
+  <title>Multi-Paxos | YP's blog</title>
   
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/29/lsm-tree/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/28/Multi Paxos/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yeahpeng">
@@ -324,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">lsm-tree</h1>
+          <h1 class="post-title" itemprop="name headline">Multi-Paxos</h1>
         
 
         <div class="post-meta">
@@ -336,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-29T23:34:22+08:00">
-                2019-12-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-28T22:39:42+08:00">
+                2020-03-28
               </time>
             
 
@@ -377,8 +377,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/12/29/lsm-tree/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2019/12/29/lsm-tree/" itemprop="commentCount"></span>
+                <a href="/2020/03/28/Multi Paxos/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2020/03/28/Multi Paxos/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -406,21 +406,53 @@
       
 
       
-        <h2 id="LSM-Tree-Log-Structed-Merge-Tree"><a href="#LSM-Tree-Log-Structed-Merge-Tree" class="headerlink" title="LSM-Tree(Log Structed Merge Tree )"></a>LSM-Tree(Log Structed Merge Tree )</h2><p><img src="https://yzskgg.ch.files.1drv.com/y4mBkp815cGhSWnJpsvTzZnlJW3oDpNvT9rBuAvtbpCTiOJ7eXMJqiZM3EFsPSCinZwCjpwVIUnXW-j0IUd4ZXHVkS0BTu-kQxgpL8deXrEw1UjGLilVPl-epmiW52vr6lyoUR70Re244dwTzQmOweOwbZB8swNbhhV_kVPeD8qw1nnYCSDtRhXFkohr2gx3tYbijS5bz3XWmX3mRVR2aQFgA?width=732&height=510&cropmode=none" alt="lsm-tree"></p>
-<p>由于磁盘空间不连续，随机读写要花大量时间在磁头换道上，而顺序读写则大大降低了换道时间，提升性能。lsm 树就是利用顺序写的性质，极大提高写入效率。</p>
-<a id="more"></a>
-
-<p>图是hbase的lsm树架构。 它主要分为在内存中的memstore 和 在磁盘上的HFile， 对于新写入的数据， 会先写到memstore中，同时为了防止丢失写一条wal。当memstore达到一定阈值，会将当前的memstore置为只读，并生成新的memstore 用于新数据写入，同时异步将旧的memstore dump到磁盘（磁盘顺序写），生成HFile。</p>
-<h2 id="读和写"><a href="#读和写" class="headerlink" title="读和写"></a>读和写</h2><p>lsm-tree为了提升写效率到极致，只对磁盘文件append操作。对于数据的删除，会写一行标记delete的新数据， 同理，修改数据是直接写入新数据。<br>对于读请求，会先在memstore中查询， 然后在HFile中找到最新数据。</p>
-<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><h3 id="布隆优化器"><a href="#布隆优化器" class="headerlink" title="布隆优化器"></a>布隆优化器</h3><p><img src="https://zdsrgg.ch.files.1drv.com/y4mw_KW3tCjO9CbK9E7BRHFBAoBaP-oCD3134ZDgHVX0EuQzDp1196emjU3CmfROyxJlsh-9-vuAjQMTfSr1Ra4ka042nBEWqrI_I2GLgSnRByQVFyMV2GAudRFM6s5uE-DXHktrS6v17Ffg_9I6a-qw87FmNVdmS4IcvutL5JDxN3fJznrKih9zgNFuV2x_RpaVEmcL6sNGlp6S93kh8F_1g?width=834&height=290&cropmode=none" alt="Bloom Filter"></p>
-<p>布隆过滤器能高效的判断数据是否<strong>不存在</strong>某个集合中。加入集合时，会对key进行三次哈希，并将对应位置1。判断是否<strong>不存在</strong>时，只需对key重新哈希，查询是否三位都为1。需要注意的是，即使都是1也只是可能存在。</p>
-<p>布隆过滤器只支持添加，不支持删除。</p>
-<h3 id="大小分级（HBase）"><a href="#大小分级（HBase）" class="headerlink" title="大小分级（HBase）"></a>大小分级（HBase）</h3><p>Minor Compaction: 选取部分小的、相邻的HFile，将它们合并成一个更大的HFile。</p>
-<p>Major Compaction: 将一个Store中所有的HFile合并成一个HFile，这个过程还会完全清理三类无意义数据：被删除的数据、TTL过期数据、版本号超过设定版本号的数据</p>
-<h3 id="分层压缩（LevelDB和RocksDB）"><a href="#分层压缩（LevelDB和RocksDB）" class="headerlink" title="分层压缩（LevelDB和RocksDB）"></a>分层压缩（LevelDB和RocksDB）</h3><p><img src="https://ytsngg.ch.files.1drv.com/y4mgRrQWLgjdZSmDcD1aXJQAOsZLktfylJCl4GSzFnvAS_vQfYoZ1ykypQ0TqONT3bIeFntSzbjSXehP0t0dSxIFKXL9cUblr7uCrzEZ-7H8T21C5STHk6n1jJ_YfQqaUWaYFzYJUw4_ucO-SWCnu5TFuMUd5UbGJs4r-tkzQNBIEtXOgk_sVC1MqZtR_0VvDOAfCa16RNu6uJ88nVm0AVNSg?width=889&height=319&cropmode=none" alt="Level"></p>
-<p>Leve0: 由ImmutableMem Table dump到磁盘, 不同SSTable的key的范围可能重叠，即相同的key可能分散在多个SSTable中。</p>
-<p>Level n(n &gt; 0): 由Level n-1 和 Level n compact生成。每个SSTable的存储一定范围的key， 不存在重叠。</p>
-<p>当读数据时，先在内存中查询，然后从0层开始一层层查询，第0层需要查询多个文件判断key是否存在该层，查询其他层时，只需要查找特定文件。</p>
+        <p>Multi-Paxos基于Basic-Paxos,大多数情况下只需要P2, 大大提升了性能, 同时还可以地将log有序的应用到状态机(非日志提交).</p>
+<h1 id="Leader-与-Leader选举"><a href="#Leader-与-Leader选举" class="headerlink" title="Leader 与 Leader选举"></a>Leader 与 Leader选举</h1><p>在多个proposer同时提交提案时，basic paxos很容易冲突，甚至产生活锁。如果能确定一个leader，并且在任期内都是由它来接收client请求，然后向acceptor提出提案，并且acceptor只接受他认为了leader的请求只便可避免上述问题。<br>论文中， lamport提供了一种基于serverId的选举方式， id最高的被选为leader。</p>
+<ol>
+<li>每个server每Tms 发送心跳给其他serverid</li>
+<li>如果一个server在2Tms内没收到大于自己serverid的心跳就认为自己时leader，他将做以下两件事<ul>
+<li>接受来自client的请求</li>
+<li>担任acceptor 和 proposer</li>
+</ul>
+</li>
+<li>如果一个server收到来自大于自己serverId的心跳，他通过收到的server知道集群的leaderid<ul>
+<li>拒绝或者重定向client请求</li>
+</ul>
+</li>
+</ol>
+<h1 id="消除Prepare"><a href="#消除Prepare" class="headerlink" title="消除Prepare"></a>消除Prepare</h1><p>basic 每个basic paxos实例都要经过prepare ， accept过程，这降低极大制约paxos的效率。在上一节说过， 为了避免多个propose之间的冲突，用leader代替proposer。利用leader，我们能在一个任期只需进行一次prepare。但需要对prepare过程做一些修改。<br>首先我们思考prepare的作用：</p>
+<ol>
+<li>确定之后accept 的最小提案号</li>
+<li>判断是否有已经accepted的val， 如果有的话，将自身状态同步当前accepted的val</li>
+</ol>
+<p>对于作用一，同一个任期内提案号会相同，我们需要将提案号含义变为任期号，原提案号由id+serveid构成，这也保证任期号的唯一。</p>
+<p>对于作用二，保持相同</p>
+<p>此外在phase 2时，acceptor 需要 </p>
+<h1 id="日志复制"><a href="#日志复制" class="headerlink" title="日志复制"></a>日志复制</h1><p>目前还有三个问题:</p>
+<ol>
+<li>只要大多数acceptor接受， 一条log便被确定选定。 但我们的目标是让每个server都有完整的日志</li>
+<li>只有leader才知道一条日志是否被选定。</li>
+<li>如何保证log的有序</li>
+</ol>
+<p>需要以下4个步骤解决上述问题:</p>
+<ol>
+<li>当leader收到大多数acceptor的回复时， 确认这条log被选定，并响应client请求， 但它还应该异步地等待或重拾剩余acceptor。这一步大多情况下让所有accept得到完整的log，但并不能百分比确保。</li>
+<li>我们将log以index 前后关联起来，index以1开始，后一条log的index为前一条log的index+1。此外，一旦某条log被选定，将这条log对应的提案号设置为特殊值（如无穷大），同时每个server都维护一个 firstUnchosenIndex的变量，他表示最小未被提交未被选定的log的index。如下图是某个server的log情况，index为4和6的log都未被选中，它的firstUnchosenIndex为4。<br><img src="https://zjrvmq.ch.files.1drv.com/y4mZ66HWqNxqcN9sw6I9GD4ggKAMFQvu_RwOrOfyvk1Lry0WdZKVvhU_NMV5Xub5CQkCLYJsc6h9-1ceE9jQnekjVdmxCeR8BeBzlaZcO2ivOzz2t1292TKnDAtWYT0AhzR3ac-YE-VYoAXQKM8vVi2W5BkYKt39V1O5ifmUghtRNRMEKCfDQ8fDRDhXM34M0ge6RMYffoWgx5S-fkFlrIrmg?width=660&height=89&cropmode=none" alt="paxos_index"></li>
+<li>每次accept请求时， leader将提案id， log的index，value和自己的firstUnchosenIndex传给所有的acceptor。acceptor收到请求后，首先将对应index位置设置为对应提案id， 然后从找到自己index小于firstUnchosenIndex的log，将提案id和请求的提案id一样的log标记为被选中。如下图，在accept前index为4，6的log未被选中，在收到accept请求后，先将index为8的log的提案id设置为3.4，然后将index为6的log确认选中，此时由于index为4的log还未被选中，firstUnchosenIndex依然等于4.<br><img src="https://zjrwmq.ch.files.1drv.com/y4mD4-w_IvRpINN-FW6X6ux7JYixRDaF1UFPYMSBKyoHNvzQznTITxNne-v7cVltFX3mAb43-WXW20yC_MP7gXknlu3V_BxymyWRZZY-yhdH18xIErH8SMCfblODHd-S5GxX0DbYLQPxr5eafIRYc8UFpWo-bBmRshdQpoD-VmHZgH5SYjfuAGq6JY_4m7JTc6zpBBOGgWAIG-zgkn-nAjgaw?width=660&height=161&cropmode=none" alt="multi_paxos"></li>
+<li>上图中index为4的log是前一任leander产生，但还为确认。为了解决这一点， accept rpc后需要返回自己firstUnchosenIndex给leader。leader对比acceptor返回的firstUnchosenIndex和自己的firstUnchosenIndex，发现自己知道一些acceptor未被确认的log， 这时leader通过一个新的rpc将信息同步给acceptor，相反acceptor可能也会知道一些leader未被确认的信息，需要acceptor来帮忙反馈。</li>
+</ol>
+<h1 id="client-协议"><a href="#client-协议" class="headerlink" title="client 协议"></a>client 协议</h1><p>client将请求发给leader， leader可能处理完请求后，在响应之前宕机，这是client以为请求处理失败，重新发起请求。这是同一个请求被处理两次，这是不可接受的。<br>解决方案是将client发给leader的请求带上一个单调递增的id。当leader收到请求后，会先和最近的几个命令的id对比一下，如果发现已经执行过，就忽略这次请求。</p>
+<h1 id="配置变更"><a href="#配置变更" class="headerlink" title="配置变更"></a>配置变更</h1><p>如果集群扩容，比如3个节点的集群扩容到5个节点，这也导致大多数从2变为3，在更新配置的过程中，可能有些节点还是用的旧的配置，如leader认为2是大多数，导致同时多个value给选中，这是不可接受。<br><img src="https://yjrtmq.ch.files.1drv.com/y4mtlaXQ0aVOiYGPjsn7ci3F_-dzv94kRlX2MXpwQexRg5nbmuSu62HSIsh9cDpc6ircNPojUm1CNRdzqXiQSMaxuB2ubKeUqHUwqoLsraFRFvwCtqbi3LLInPSwheLnS8Rsm0FrEy-WU41xhLERhg1VtRwRPZqTvYGNMABm8Oqox7GeZT16cLmuKFVf035S_YedrQ14H-2fu0N8WCjK6t9gQ?width=557&height=203&cropmode=none" alt="config"><br>论文中对这种配置变更问题的建议是将配置看作一个log来管理。如上图，C1和C2是两个不同的配置，集群在启动是需要配置一个参数α，表示在配置应用到状态机后的第几个log生效。图中α=3， 表示index为1，2，3的log用的集群启动配置， 4，5使用配置C1，6开始的之后log使用C2。<br>α还有个隐藏的作用， 限制同时选定的log条数，比如index为i的log被选中，i-α之前的log也要被选中。</p>
+<h1 id="Multi-Paxos的优化"><a href="#Multi-Paxos的优化" class="headerlink" title="Multi-Paxos的优化"></a>Multi-Paxos的优化</h1><p>multi-paxos允许多个proposal存在， 这种情况下p1 阶段仍然可能产生活锁，退化成basic-paxos。但这种leader宕机引起的冲突是小概率事件， 请求主要的开销是在p2.</p>
+<h1 id="Multi-Paxos-vs-Raft"><a href="#Multi-Paxos-vs-Raft" class="headerlink" title="Multi-Paxos vs Raft"></a>Multi-Paxos vs Raft</h1><p><em>正确性保证</em><br>Multi-Paxos是以paxos为基础.Basic Paxos通过三个阶段的算法证明了正确性,Multi-Paoxs则是基于Basic Paxos进行优化,允许多leader 出现.<br>ZAB,Raft都要求只有一个合法leader,正确性由从leader角度描述</p>
+<p><em>都使用唯一id来标示leader的合法性</em><br>Multi-Paxos 用proposer-id, Raft用 team-id.ZAB用epoch</p>
+<p><em>日志恢复</em><br>Multi-Paxos在选举leader时,不要求leader的日志完整性,因此在确立leader后,首先需要根据follower将leader更新到最新<br>Raft要求leader的日志最全, 只需要由leader向follower发送其所需要的日志</p>
+<p><em>日志的安全性</em><br>日志可提交和日志被提交时两个概念,但无论时Raft还是Multi-Paxos, 只要日志可提交,就不会丢失.</p>
+<p><em>日志连续性和空洞</em><br>Raft强调日志的连续性,Multi-Paxos则允许空洞.日志连续性隐含这样的性质:如果某一条日志被提交,则他之前的日志也会被提交,这样在日志恢复时,能leader和follower能快速对比缺失.而Multi-Paxos允许空洞使日志可以单独被确认(即使前一条日志还未被确认),这使日志可以并发提交,有更好的性能,不过如果想顺序应用到状态机需要额外的保证.</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://www.zhihu.com/question/36648084" target="_blank" rel="noopener">https://www.zhihu.com/question/36648084</a></li>
+<li><a href="https://www.zhihu.com/question/36648084" target="_blank" rel="noopener">https://www.zhihu.com/question/36648084</a></li>
+</ol>
 
       
     </div>
@@ -438,7 +470,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/lsm/" rel="tag"># lsm</a>
+            <a href="/tags/Paxos/" rel="tag"># Paxos</a>
+          
+            <a href="/tags/共识算法/" rel="tag"># 共识算法</a>
           
         </div>
       
@@ -451,8 +485,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/15/Kerberos/" rel="next" title="Kerberos">
-                <i class="fa fa-chevron-left"></i> Kerberos
+              <a href="/2020/03/08/Google_Spanner/" rel="next" title="Spanner(2012)">
+                <i class="fa fa-chevron-left"></i> Spanner(2012)
               </a>
             
           </div>
@@ -460,10 +494,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/02/16/actor-model/" rel="prev" title="Actor Model">
-                Actor Model <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -494,7 +524,7 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2019/12/29/lsm-tree/" data-title="lsm-tree" data-url="http://yoursite.com/2019/12/29/lsm-tree/">
+      <div class="ds-thread" data-thread-key="2020/03/28/Multi Paxos/" data-title="Multi-Paxos" data-url="http://yoursite.com/2020/03/28/Multi Paxos/">
       </div>
     </div>
 
@@ -613,7 +643,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LSM-Tree-Log-Structed-Merge-Tree"><span class="nav-number">1.</span> <span class="nav-text">LSM-Tree(Log Structed Merge Tree )</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读和写"><span class="nav-number">2.</span> <span class="nav-text">读和写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化"><span class="nav-number">3.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#布隆优化器"><span class="nav-number">3.1.</span> <span class="nav-text">布隆优化器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大小分级（HBase）"><span class="nav-number">3.2.</span> <span class="nav-text">大小分级（HBase）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分层压缩（LevelDB和RocksDB）"><span class="nav-number">3.3.</span> <span class="nav-text">分层压缩（LevelDB和RocksDB）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Leader-与-Leader选举"><span class="nav-number">1.</span> <span class="nav-text">Leader 与 Leader选举</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消除Prepare"><span class="nav-number">2.</span> <span class="nav-text">消除Prepare</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志复制"><span class="nav-number">3.</span> <span class="nav-text">日志复制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#client-协议"><span class="nav-number">4.</span> <span class="nav-text">client 协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置变更"><span class="nav-number">5.</span> <span class="nav-text">配置变更</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Multi-Paxos的优化"><span class="nav-number">6.</span> <span class="nav-text">Multi-Paxos的优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Multi-Paxos-vs-Raft"><span class="nav-number">7.</span> <span class="nav-text">Multi-Paxos vs Raft</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
